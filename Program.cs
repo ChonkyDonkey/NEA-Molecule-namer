@@ -64,7 +64,7 @@ namespace Molecule_Namer
                 Console.WriteLine("what is your structural formula? ");
                 First = Console.ReadLine();//gets an input for the Structural formula
                 
-                SFconvertion(First, Final, valid);
+                SFconversion(First, Final, valid);
                 valid = false;
 
 
@@ -74,7 +74,7 @@ namespace Molecule_Namer
 
             
         }
-        static void SFconvertion(string First, string Final, bool valid) {
+        static void SFconversion(string First, string Final, bool valid) {
             
             
             Console.WriteLine("test");
