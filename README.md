@@ -3,6 +3,9 @@
 Molecule Namer is a C# application which takes in molecule formulae and 
 determines the IUPAC nomenclature for it.
 
+Author: Leo Jones
+Github: ChonkyDonkey
+
 ## Installation
 
 
