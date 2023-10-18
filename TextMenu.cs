@@ -1,4 +1,4 @@
-namespace Molecule_Namer
+namespace MoleculeNamer
 {
     public class TextMenu
     {

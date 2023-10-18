@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Molecule_Namer
+namespace MoleculeNamer
 {
     public class Node
     {

@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
-namespace Molecule_Namer
+namespace MoleculeNamer
 {
     public class Program
     {

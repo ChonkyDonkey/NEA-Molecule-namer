@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Molecule_Namer
+namespace MoleculeNamer
 {
     public class MoleculeProcesssor
     {
         Graph graph = new Graph();
         Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
 
+        public bool validateString(string CSF){
+            bool valid = false;
+            return valid;
+        }
         private void findArc(string CSF, Dictionary<string, Node> molecule)
         {
             // for (int i = 0; i <= count-1; i++)
@@ -196,6 +200,12 @@ namespace Molecule_Namer
         }
         public Graph processMolecule(string CSF)
         {
+            // check that the string is valid, before continuing.
+            if (!validateString(CSF)) {
+                // if the string is empty return the empty graph
+                return graph;
+            }
+
             int count = CSF.Count(x => x == 'C');  // counts the number of 'C'
             //Console.WriteLine(count);
 
