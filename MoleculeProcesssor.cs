@@ -194,7 +194,6 @@ namespace Molecule_Namer
                 ogNode.AddArc(connectingNode, 1);
             }
         }
-
         public Graph processMolecule(string CSF)
         {
             int count = CSF.Count(x => x == 'C');  // counts the number of 'C'
