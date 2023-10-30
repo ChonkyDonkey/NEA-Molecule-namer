@@ -12,7 +12,7 @@ namespace MoleculeNamer
         Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
 
         public bool validateString(string CSF){
-            bool valid = false;
+            bool valid = True;
             return valid;
         }
         private void findArc(string CSF, Dictionary<string, Node> molecule)
