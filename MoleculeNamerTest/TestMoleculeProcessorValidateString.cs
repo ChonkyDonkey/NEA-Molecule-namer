@@ -4,11 +4,11 @@ using MoleculeNamer;
 namespace MoleculeNamer.UnitTests
 {
     [TestClass]
-    public class MoleculeNamer_MoleculeProcessorShould
+    public class MoleculeNamer_MoleculeProcessor_ValidateStringShould
     {
         private readonly MoleculeProcesssor _moleculeProcessor;
 
-        public MoleculeNamer_MoleculeProcessorShould()
+        public MoleculeNamer_MoleculeProcessor_ValidateStringShould()
         {
             _moleculeProcessor = new MoleculeProcesssor();
         }
