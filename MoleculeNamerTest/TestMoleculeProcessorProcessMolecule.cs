@@ -25,8 +25,7 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testOpenBracket()
         {
             Graph result = _moleculeProcessor.processMolecule("(");
-            //Assert.IsFalse(result, "Open bracket should fail test");
-            Assert.IsFalse(true, "Need Proper test logic here");
+            Assert.IsTrue(result.AllNodes.Count == 0, "( is invalid so no graph will be returned");
         }
 
         [TestMethod]
@@ -41,8 +40,7 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testBasicMolecule()
         {
             Graph result = _moleculeProcessor.processMolecule("C");
-            //Assert.IsTrue(result, "\'C\' should pass test");
-            Assert.IsFalse(true, "Need Proper test logic here");
+            Assert.IsTrue(result.AllNodes.Count == 1, "Need Proper test logic here");
         }
 
         [TestMethod]
