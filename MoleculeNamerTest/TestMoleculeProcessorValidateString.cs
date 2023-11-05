@@ -99,7 +99,7 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testBasicMoleculeWithNestedBrackets()
         {
             bool result = _moleculeProcessor.validateString("C((C))C");
-            Assert.IsFalse(result, "\'C\' should Fail test");
+            Assert.IsFalse(result, "'C((C))C' should Fail test");
         }
 
         [TestMethod]

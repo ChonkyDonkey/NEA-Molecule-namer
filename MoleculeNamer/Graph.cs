@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,10 @@ namespace MoleculeNamer
             var n = new Node(name);
             AllNodes.Add(n);
             return n;
+        }
+        
+        public int getNumNodes() {
+            return AllNodes.Count;
         }
         private int?[,] CreateAdjMatrix()
         {
