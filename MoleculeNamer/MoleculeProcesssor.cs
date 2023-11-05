@@ -41,6 +41,7 @@ namespace MoleculeNamer
                     Trace.WriteLine("validateString_Char: First character must be Carbon " + CSF);
                     return false;
                 }
+                if (CSF[CSF.Length - 1] != 'C') { return false; }//string must end in 'C'
                 return validateString_Brackets(CSF, bracketNo);
             }
             else
@@ -55,17 +56,21 @@ namespace MoleculeNamer
             int bracketTracker = 0;
             if (bracketNo > 0)
             {//checks if brackets exist in the string
-                if (bracketNo % 2 == 1)
+                if (bracketNo % 2 == 1)//even number of brackets
                 {//makes sure there is no odd numberes brackets
                     Trace.WriteLine("validateString_Brackets: Odd numbers of brackets found in " + CSF);
                     return false;
                 }
                 for (int i = 0; i <= CSF.Length - 1; i++)
                 {//checks all the brackets pairs up
-                    if (CSF[i] == '(') { bracketTracker++; }
+                    if (CSF[i] == '(')
+                    {
+                        bracketTracker++;
+                        if (CSF[i + 1] != 'C') { return false; }//makes sure open brackets are always followed by a 'C'
+                    }
                     else if (CSF[i] == ')') { bracketTracker--; }
 
-                    if (bracketTracker < 0)
+                    if (bracketTracker < 0)//makes sure a closing bracket can only be inputted if its pairopen bracket comes before. 
                     {
                         //verifies '('is the first bracket and that there is never a ')'before its '(' pair
                         Trace.WriteLine("validateString_Brackets: ('is the first bracket and that there is never a ')'before its '(' pair " + CSF);
@@ -73,7 +78,7 @@ namespace MoleculeNamer
                     }
 
                 }
-                if (bracketTracker != 0)
+                if (bracketTracker != 0)//makes sure there is the same number of '(' as ')'
                 {
                     Trace.WriteLine("validateString_Brackets: Differing number of ( and )'s: " + CSF);
                     return false;
@@ -93,8 +98,8 @@ namespace MoleculeNamer
             verify the string consists of 'C' and '()' (this)                                        done
             verify the string has the correct number of closed brackets to open brackets             done   
             verify the first barscket if there is one is open or nothing                             done
-            make sure an open bracket is always followed by a 'C'
-            make sure any closed brackets a are followed by a 'C' or open brackets
+            make sure an open bracket is always followed by a 'C'                                    done
+            strings must end with a 'C'                                                              done
             make sure you dont have more than 2 '()' following a 'C' unless it is the start node, then it can be 3
             make sure input != Null                                                                  done
             */

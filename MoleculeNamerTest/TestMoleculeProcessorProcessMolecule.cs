@@ -107,7 +107,7 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testBasicMoleculeValidNestedBrackets()
         {
             Graph result = _moleculeProcessor.processMolecule("C(C(C))C");
-            Assert.IsTrue(result.getNumNodes() == 3, "C(C(C))C is valid so a graph should be returned");
+            Assert.IsTrue(result.getNumNodes() == 4, "C(C(C))C is valid so a graph should be returned");
         }
 
         [TestMethod]
