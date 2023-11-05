@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +13,94 @@ namespace MoleculeNamer
         Graph graph = new Graph();
         Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
 
-        public bool validateString(string CSF){
+        private bool validateString_Char(string CSF)
+        {
+            int bracketNo = 0;
+            int CNo = 0; //carbon number
+            if (CSF != null)
+            { //checks for null
+                for (int i = 0; i <= CSF.Length - 1; i++)
+                {
+                    if (CSF[i] != 'C' && CSF[i] != '(' && CSF[i] != ')')
+                    {// if the string contain anything but these characters then it is an invalid string
+                        Trace.WriteLine("validateString_Char: Rejecting due to " + CSF[i] + " not being C, ( or )");
+                        return false;
+                    }
+                    else if (CSF[i] == '(' || CSF[i] == ')') { bracketNo++; }//gets the number of brackets
+                    else if (CSF[i] == 'C') { CNo++; }
+                }
+                if (CNo == 0)
+                {
+                    //makes sure that Carbon in the string
+                    Trace.WriteLine("validateString_Char: No 'C's found in " + CSF);
+                    return false;
+                }
+                if (CSF[0] != 'C')
+                {
+                    //makes sure first char is a carbon
+                    Trace.WriteLine("validateString_Char: First character must be Carbon " + CSF);
+                    return false;
+                }
+                return validateString_Brackets(CSF, bracketNo);
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+        private bool validateString_Brackets(string CSF, int bracketNo)
+        {
+            int bracketTracker = 0;
+            if (bracketNo > 0)
+            {//checks if brackets exist in the string
+                if (bracketNo % 2 == 1)
+                {//makes sure there is no odd numberes brackets
+                    Trace.WriteLine("validateString_Brackets: Odd numbers of brackets found in " + CSF);
+                    return false;
+                }
+                for (int i = 0; i <= CSF.Length - 1; i++)
+                {//checks all the brackets pairs up
+                    if (CSF[i] == '(') { bracketTracker++; }
+                    else if (CSF[i] == ')') { bracketTracker--; }
+
+                    if (bracketTracker < 0)
+                    {
+                        //verifies '('is the first bracket and that there is never a ')'before its '(' pair
+                        Trace.WriteLine("validateString_Brackets: ('is the first bracket and that there is never a ')'before its '(' pair " + CSF);
+                        return false;
+                    }
+
+                }
+                if (bracketTracker != 0)
+                {
+                    Trace.WriteLine("validateString_Brackets: Differing number of ( and )'s: " + CSF);
+                    return false;
+                }
+            }
+            return validateString_closeBracket(CSF);
+        }
+        private bool validateString_closeBracket(string CSF)
+        {
             bool valid = true;
+            return valid;
+        }
+
+        public bool validateString(string CSF)
+        {
+            /*
+            verify the string consists of 'C' and '()' (this)                                        done
+            verify the string has the correct number of closed brackets to open brackets             done   
+            verify the first barscket if there is one is open or nothing                             done
+            make sure an open bracket is always followed by a 'C'
+            make sure any closed brackets a are followed by a 'C' or open brackets
+            make sure you dont have more than 2 '()' following a 'C' unless it is the start node, then it can be 3
+            make sure input != Null                                                                  done
+            */
+            bool valid = true;
+            valid = validateString_Char(CSF);
+
 
 
             return valid;
@@ -28,7 +116,7 @@ namespace MoleculeNamer
                 char charValue = CSF[i];
                 Console.WriteLine((char)charValue);
                 int trueCarbon = i - noBrack;
-                Console.WriteLine("FindArc: i=" + i +", charValue=" + charValue);
+                Console.WriteLine("FindArc: i=" + i + ", charValue=" + charValue);
                 //considering CSF[i]
                 if (charValue == 'C')
                 {
@@ -41,7 +129,7 @@ namespace MoleculeNamer
                     // Do nothing in these cases, as we only take action from specific atoms
                     noBrack++;
                 }
-                
+
                 graph.PrintMatrix();
             }
         }
@@ -91,7 +179,7 @@ namespace MoleculeNamer
                 testCharValue = CSF[i - t];
                 if (testCharValue == 'C')
                 {
-                    string OGNodeName = "C" + trueCarbon ;
+                    string OGNodeName = "C" + trueCarbon;
                     int Left = trueCarbon - t;
 
                     string Connection = "C" + Left;
@@ -203,7 +291,8 @@ namespace MoleculeNamer
         public Graph processMolecule(string CSF)
         {
             // check that the string is valid, before continuing.
-            if (!validateString(CSF)) {
+            if (!validateString(CSF))
+            {
                 // if the string is empty return the empty graph
                 return graph;
             }
