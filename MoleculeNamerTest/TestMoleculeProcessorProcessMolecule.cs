@@ -119,5 +119,11 @@ namespace MoleculeNamer.UnitTests
             result = _moleculeProcessor.processMolecule("CC(C))C");
             Assert.IsTrue(result.getNumNodes() == 0, "CCC(C))C is invalid so no graph will be returned");
         }
+                [TestMethod]
+        public void MoleculeProcesssor_alkyl_branches_from_OG_carbon()
+        {
+            Graph result = _moleculeProcessor.processMolecule("C(C)(C)(C)C");
+            Assert.IsTrue(result.getNumNodes() == 4, "C(C)(C)(C)C is valid so a graph should be returned");
+        }
     }
 }
