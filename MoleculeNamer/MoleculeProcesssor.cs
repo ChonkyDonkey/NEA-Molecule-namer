@@ -67,6 +67,7 @@ namespace MoleculeNamer
                     {
                         bracketTracker++;
                         if (CSF[i + 1] != 'C') { return false; }//makes sure open brackets are always followed by a 'C'
+                        if (validateString_conection(CSF, i) == false) { return false; }
                     }
                     else if (CSF[i] == ')') { bracketTracker--; }
 
@@ -84,12 +85,29 @@ namespace MoleculeNamer
                     return false;
                 }
             }
-            return validateString_closeBracket(CSF);
+            return true;
         }
-        private bool validateString_closeBracket(string CSF)
+        private bool validateString_conection(string CSF, int i)
         {
-            bool valid = true;
-            return valid;
+            int bracketTracker = 0;
+            int Max_Connections;
+            int connections = 0;
+            bool endCon = false;
+            if (i == 1) { Max_Connections = 3; }
+            else { Max_Connections = 2; }
+            while (connections <= Max_Connections && endCon == false)
+            {
+                if (CSF[i] == '(') { bracketTracker++; }
+                else if (CSF[i] == ')') { bracketTracker--; }
+                if (bracketTracker == 0)
+                {
+                    connections++;
+                    if (CSF[i + 1] == 'C' || CSF[i + 1] == ')') { endCon = true; }
+                }
+                i++;
+            }
+            if (connections > Max_Connections) { return false; }
+            return true;
         }
 
         public bool validateString(string CSF)
