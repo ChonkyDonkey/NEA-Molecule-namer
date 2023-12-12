@@ -127,5 +127,11 @@ namespace MoleculeNamer.UnitTests
             result = _moleculeProcessor.validateString("C(C)(C)(C)(C)C");
             Assert.IsFalse(result, "C(C)(C)(C)(C)C is valid so a graph should not be returned");
         }
+        [TestMethod]
+        public void MoleculeProcesssor_incorrectbrackets()
+        {
+            bool result = _moleculeProcessor.validateString("C(C(C)C");
+            Assert.IsFalse(result, "\'C(C(C)C\' should fail test");
+        }
     }
 }

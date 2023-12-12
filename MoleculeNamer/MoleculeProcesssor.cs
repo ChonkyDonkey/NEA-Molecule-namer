@@ -121,12 +121,12 @@ namespace MoleculeNamer
             make sure you dont have more than 2 '()' following a 'C' unless it is the start node, then it can be 3
             make sure input != Null                                                                  done
             */
-            bool valid = true;
-            valid = validateString_Char(CSF);
+
+            return validateString_Char(CSF);
 
 
 
-            return valid;
+
         }
         private void findArc(string CSF, Dictionary<string, Node> molecule)
         {
