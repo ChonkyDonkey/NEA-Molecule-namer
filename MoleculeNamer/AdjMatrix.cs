@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,42 @@ namespace MoleculeNamer
             Console.Write("\r\n");
         }
 
+        public List<string> FindLongest()
+        {
+            // build list of all routes from startnode
+            List<List<string>> allRoutes = new List<List<string>>(); //list will hold all  of the routes in one place
+            List<string> route = new List<string>();
+            List<List<string>> allRouteCombinations = new List<List<string>>(); // intermediate list space
 
+            // Depth first traversal of the adjacency matrix
+
+            // find longest total route
+            List<string> junctions = new List<string>();
+            int[] connections = FindConections();
+            List<string> longestChain = new List<string>();  // longest chain = {start node,...,end node}
+            return longestChain;
+        }
+        private int[] FindConections()
+        {
+            int width = matrix.GetLength(1);
+            int height = matrix.GetLength(0);
+            int[] connectionsarray = new int[height];//finds the number of connections each  node has
+            for (int j = 0; j <= height; j++)
+            {
+
+                int connections = 0;
+
+                for (int i = 0; i <= width; i++)
+                {
+                    if (matrix[i, j] == '1')
+                    {
+                        connections++;
+                    }
+
+                }
+                connectionsarray[j] = connections;
+            }
+            return connectionsarray;
+        }
     }
 }

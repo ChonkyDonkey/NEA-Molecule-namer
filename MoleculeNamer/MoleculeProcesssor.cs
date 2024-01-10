@@ -135,7 +135,7 @@ namespace MoleculeNamer
                     noBrack++;
                 }
 
-                graph.PrintMatrix();
+                //graph.PrintMatrix();
             }
         }
 

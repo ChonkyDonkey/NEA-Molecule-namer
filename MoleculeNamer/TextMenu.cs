@@ -59,6 +59,8 @@ namespace MoleculeNamer
 
                         Graph graph = molProc.processMolecule(CSF);
                         graph.PrintMatrix();
+                        //LongestChain.FindLongest();
+                        
 
                         valid = false;
                         break;
