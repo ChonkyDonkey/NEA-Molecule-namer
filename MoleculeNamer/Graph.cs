@@ -24,8 +24,9 @@ namespace MoleculeNamer
             AllNodes.Add(n);
             return n;
         }
-        
-        public int getNumNodes() {
+
+        public int getNumNodes()
+        {
             return AllNodes.Count;
         }
         private int?[,] CreateAdjMatrix()
