@@ -1,7 +1,11 @@
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
+
 namespace MoleculeNamer
 {
     public class TextMenu
     {
+        public string final = "";
         private static string SFconversion(string First)
         {
             Console.WriteLine("test");
@@ -23,22 +27,24 @@ namespace MoleculeNamer
             return final;
             //Console.WriteLine("chick2");
         }
-        private static string SFInput()
+        private void SFInput()
         {
             bool valid = true;
-            string final;
+
             string? first;
             do
             {
                 Console.WriteLine("what is your structural formula? ");
 
-                first = Console.ReadLine();  //gets an input for the Structural formula
-                final = SFconversion(first);
-                valid = false;
-
+                first = Console.ReadLine();//gets an input for the Structural formula
+                if (first.Length > 0)
+                {
+                    final = SFconversion(first);
+                    valid = false;
+                }
             } while (valid);
 
-            return final;
+
         }
 
 
@@ -54,13 +60,15 @@ namespace MoleculeNamer
                 switch (choice)
                 {
                     case "1":
-                        CSF = SFInput();
+                        SFInput();
+                        CSF = final;
                         MoleculeProcesssor molProc = new MoleculeProcesssor();  //creating an event og molecule process
 
                         Graph graph = molProc.processMolecule(CSF);
                         graph.PrintMatrix();
+                        graph.findLongest();
                         //LongestChain.FindLongest();
-                        
+
 
                         valid = false;
                         break;

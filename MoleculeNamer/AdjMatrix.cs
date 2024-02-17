@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,13 +11,42 @@ namespace MoleculeNamer
 {
     public class AdjMatrix
     {
+        List<List<int>> allRoutes = new List<List<int>>(); //list will hold all  of the routes in one place
         int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
-        int count;
+        int count = 0;
+
+
+        public AdjMatrix()
+        {
+            //Default Constructor
+        }
 
         public AdjMatrix(int?[,] _adj, int _count)
         {
             matrix = _adj;
             count = _count;
+        }
+
+        public AdjMatrix(Graph _graph)
+        {
+            matrix = _graph.CreateAdjMatrix();
+            count = _graph.getNumNodes();
+        }
+
+        public void addGraph(Graph _graph)
+        {
+            matrix = _graph.CreateAdjMatrix();
+            count = _graph.getNumNodes();
+        }
+
+        public int getNumNodes()
+        {
+            return count;
+        }
+
+        public bool isLinked(int i, int j)
+        {
+            return (matrix[i, j] is not null);
         }
 
         public void PrintMatrix()
@@ -53,26 +84,64 @@ namespace MoleculeNamer
             Console.Write("\r\n");
         }
 
-        public List<string> FindLongest()
+        public List<int> FindLongest()
         {
             // build list of all routes from startnode
-            List<List<string>> allRoutes = new List<List<string>>(); //list will hold all  of the routes in one place
-            List<string> route = new List<string>();
+
+            List<int> longestRoute = new List<int>();
             List<List<string>> allRouteCombinations = new List<List<string>>(); // intermediate list space
 
-            // Depth first traversal of the adjacency matrix
+            // Build list of routes from master
+            // Using Depth first traversal of the adjacency matrix
+            List<int> RouteSoFar1 = new List<int>();
+            RouteSoFar1.Add(0);
+            FindPath(RouteSoFar1);
+            // longestcalcs
 
-            // find longest total route
-            List<string> junctions = new List<string>();
-            int[] connections = FindConections();
-            List<string> longestChain = new List<string>();  // longest chain = {start node,...,end node}
-            return longestChain;
+            return longestRoute;
+
+        }
+        private void FindPath(List<int> RouteSoFar)
+        {
+            int currentNode = RouteSoFar.Last();
+            List<int> neighbours = buildNeighbourlist(currentNode);
+            bool validNextFound = false;
+
+            foreach (int a in neighbours)
+            {
+                if (!RouteSoFar.Contains(a))
+                {
+                    validNextFound = true;
+                }
+                List<int> RouteSoFar1 = RouteSoFar;
+                RouteSoFar1.Add(a);
+                FindPath(RouteSoFar1);
+            }
+
+            if (!validNextFound)
+            {
+                allRoutes.Add(RouteSoFar);
+            }
+        }
+
+        private List<int> buildNeighbourlist(int currentNode)
+        {
+            List<int> neighbourList = new List<int>();
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                if (matrix[currentNode, i] == 1)//checks the matrix along the row of the current node loooking fo connections
+                {
+                    neighbourList.Add(i);
+                }
+            }
+            // Code here
+            return neighbourList;
         }
         private int[] FindConections()
         {
             int width = matrix.GetLength(1);
             int height = matrix.GetLength(0);
-            int[] connectionsarray = new int[height];//finds the number of connections each  node has
+            int[] connectionsarray = new int[height]; //finds the number of connections each  node has
             for (int j = 0; j <= height; j++)
             {
 

@@ -20,7 +20,7 @@ namespace MoleculeNamer
         /// Create a new arc, connecting this Node to the Nod passed in the parameter
         /// Also, it creates the inversed node in the passed node
         /// </summary>
-        public Node AddArc(Node child, int w)
+        public Node AddArc(Node child, int w = 1)
         {
             Arcs.Add(new Arc
             {

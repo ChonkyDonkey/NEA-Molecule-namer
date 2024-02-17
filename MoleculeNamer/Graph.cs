@@ -24,26 +24,26 @@ namespace MoleculeNamer
             AllNodes.Add(n);
             return n;
         }
-        
-        public int getNumNodes() {
+
+        public int getNumNodes()
+        {
             return AllNodes.Count;
         }
-        private int?[,] CreateAdjMatrix()
+        public int?[,] CreateAdjMatrix()
         {
             // Matrix will be created here...
-
             int?[,] adj = new int?[AllNodes.Count, AllNodes.Count];
 
+            // Iterate over all nodes
             for (int i = 0; i < AllNodes.Count; i++)
             {
+                // iterate over all peers
                 Node n1 = AllNodes[i];
-
                 for (int j = 0; j < AllNodes.Count; j++)
                 {
                     Node n2 = AllNodes[j];
 
                     var arc = n1.Arcs.FirstOrDefault(a => a.Child == n2);
-
                     if (arc != null)
                     {
                         adj[i, j] = arc.Weight;
@@ -51,17 +51,19 @@ namespace MoleculeNamer
                 }
             }
             return adj;
-
         }
 
         public void PrintMatrix()
         {
-            AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
+            //AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
+            AdjMatrix adj = new AdjMatrix(this);
             adj.PrintMatrix();
-            List<string> longest = adj.FindLongest();
         }
-
-        
-
+        public void findLongest()
+        {
+            //AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
+            AdjMatrix adj = new AdjMatrix(this);
+            adj.FindLongest();
+        }
     }
 }

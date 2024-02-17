@@ -10,7 +10,7 @@ namespace MoleculeNamer
 {
     public class Program
     {
-        
+
         static void Main(string[] args)
         {
             TextMenu menu = new TextMenu();

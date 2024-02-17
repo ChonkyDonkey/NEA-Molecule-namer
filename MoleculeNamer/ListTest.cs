@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 List<List<string>> myList = new List<List<string>>();
 // Iterate through tree
 {
@@ -21,3 +23,19 @@ foreach (List<string> subList in myList)
         Console.WriteLine(item);
     }
 }
+public class test{
+
+    static void test1(){
+    List<string> newList = new List<string>();
+    newList.Add("a");
+    newList.Add("b");
+    newList.Add("c");
+    Console.WriteLine(newList);
+
+    } 
+    private List<string> test2(List<string>newlist){
+        newlist.Add("d");
+        return newlist;
+    }
+}
+
