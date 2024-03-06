@@ -12,7 +12,6 @@ namespace MoleculeNamer
     public class AdjMatrix
     {
         List<List<int>> allRoutes = new List<List<int>>();
-        List<int >visited = new List<int>(); //list will hold all  of the routes in one place
         int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
         int count = 0;
 
@@ -94,45 +93,61 @@ namespace MoleculeNamer
 
             // Build list of routes from master
             // Using Depth first traversal of the adjacency matrix
-            
             List<int> RouteSoFar1 = new List<int>();
             RouteSoFar1.Add(0);
-            visited.Add(0);
-            FindPath(RouteSoFar1);
+            FindPaths(RouteSoFar1);
             // longestcalcs
-            foreach (var sublist in allRoutes)
+            foreach (var route in allRoutes)
             {
-                foreach (var obj in sublist)
+                dumpRoute(route);
+                if (route.Count > longestRoute.Count)
                 {
-                    Console.WriteLine(obj);
+                    longestRoute = route;
                 }
             }
-            foreach(int a in visited){Console.WriteLine("visited : " + visited[a]);}
+            dumpRoute(longestRoute);
+
             return longestRoute;
 
         }
-        private void FindPath(List<int> RouteSoFar)
+
+        //Helper function to dump a route
+        private void dumpRoute(List<int> route)
         {
-            int currentNode = RouteSoFar.Last();
+            Console.Write("Route: ");
+            foreach (int r in route)
+                Console.Write(r + " ");
+            Console.WriteLine("");
+        }
+
+        private void FindPaths(List<int> RouteSoFar)
+        {
+            int currentNode = RouteSoFar.Last(); // What was the last node?
+            // find the neighbours of the current node
             List<int> neighbours = buildNeighbourlist(currentNode);
             bool validNextFound = false;
 
+            // scan over all the neighbours
             foreach (int a in neighbours)
             {
-                if (!RouteSoFar.Contains(a)&& !visited.Contains(a))
+                // Have we visited this previously
+                if (!RouteSoFar.Contains(a))
                 {
+                    // Then this is a node to test on our route
                     validNextFound = true;
-                    visited.Add(a);
-                    List<int> RouteSoFar1 = RouteSoFar;
+                    // Make a copy of the existing list
+                    List<int> RouteSoFar1 = new List<int>(RouteSoFar);
+                    // add the neighbout to it
                     RouteSoFar1.Add(a);
-                    foreach(int r in RouteSoFar)
-                    Console.WriteLine("route: " + r);
-                    FindPath(RouteSoFar1);
+                    dumpRoute(RouteSoFar1);
+                    // now test for this list
+                    FindPaths(RouteSoFar1);
                 }
             }
 
             if (!validNextFound)
             {
+                Console.WriteLine("No new neighbour was found - therefore at end of a route");
                 allRoutes.Add(RouteSoFar);
                 Console.WriteLine(allRoutes.Count);
             }
@@ -148,7 +163,7 @@ namespace MoleculeNamer
                     neighbourList.Add(i);
                 }
             }
-            
+
             return neighbourList;
         }
         private int[] FindConections()

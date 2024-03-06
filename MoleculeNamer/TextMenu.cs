@@ -37,11 +37,13 @@ namespace MoleculeNamer
                 Console.WriteLine("what is your structural formula? ");
 
                 first = Console.ReadLine();//gets an input for the Structural formula
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (first.Length > 0)
                 {
                     final = SFconversion(first);
                     valid = false;
                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             } while (valid);
 
 
