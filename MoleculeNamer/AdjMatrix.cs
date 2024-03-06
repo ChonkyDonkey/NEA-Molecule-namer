@@ -11,7 +11,8 @@ namespace MoleculeNamer
 {
     public class AdjMatrix
     {
-        List<List<int>> allRoutes = new List<List<int>>(); //list will hold all  of the routes in one place
+        List<List<int>> allRoutes = new List<List<int>>();
+        List<int >visited = new List<int>(); //list will hold all  of the routes in one place
         int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
         int count = 0;
 
@@ -93,11 +94,20 @@ namespace MoleculeNamer
 
             // Build list of routes from master
             // Using Depth first traversal of the adjacency matrix
+            
             List<int> RouteSoFar1 = new List<int>();
             RouteSoFar1.Add(0);
+            visited.Add(0);
             FindPath(RouteSoFar1);
             // longestcalcs
-
+            foreach (var sublist in allRoutes)
+            {
+                foreach (var obj in sublist)
+                {
+                    Console.WriteLine(obj);
+                }
+            }
+            foreach(int a in visited){Console.WriteLine("visited : " + visited[a]);}
             return longestRoute;
 
         }
@@ -109,18 +119,22 @@ namespace MoleculeNamer
 
             foreach (int a in neighbours)
             {
-                if (!RouteSoFar.Contains(a))
+                if (!RouteSoFar.Contains(a)&& !visited.Contains(a))
                 {
                     validNextFound = true;
+                    visited.Add(a);
+                    List<int> RouteSoFar1 = RouteSoFar;
+                    RouteSoFar1.Add(a);
+                    foreach(int r in RouteSoFar)
+                    Console.WriteLine("route: " + r);
+                    FindPath(RouteSoFar1);
                 }
-                List<int> RouteSoFar1 = RouteSoFar;
-                RouteSoFar1.Add(a);
-                FindPath(RouteSoFar1);
             }
 
             if (!validNextFound)
             {
                 allRoutes.Add(RouteSoFar);
+                Console.WriteLine(allRoutes.Count);
             }
         }
 
@@ -134,7 +148,7 @@ namespace MoleculeNamer
                     neighbourList.Add(i);
                 }
             }
-            // Code here
+            
             return neighbourList;
         }
         private int[] FindConections()
