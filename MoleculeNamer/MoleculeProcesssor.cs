@@ -10,6 +10,7 @@ namespace MoleculeNamer
 {
     public class MoleculeProcesssor
     {
+         
         Graph graph = new Graph();
         Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
 
@@ -294,6 +295,7 @@ namespace MoleculeNamer
             }
         }
         public Graph processMolecule(string CSF)
+
         {
             // check that the string is valid, before continuing.
             if (!validateString(CSF))
@@ -317,5 +319,6 @@ namespace MoleculeNamer
             findArc(CSF, molecule);
             return graph;
         }
+
     }
 }

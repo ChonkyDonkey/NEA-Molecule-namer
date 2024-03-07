@@ -59,11 +59,18 @@ namespace MoleculeNamer
             AdjMatrix adj = new AdjMatrix(this);
             adj.PrintMatrix();
         }
-        public void findLongest()
+        public List<int> findLongest()
         {
             //AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
             AdjMatrix adj = new AdjMatrix(this);
-            adj.FindLongest();
+            return adj.FindLongest();
+
+        }
+        public string nameMolecule()
+        {
+            AdjMatrix adj = new AdjMatrix(this);
+            return adj.nameMolecule(findLongest());
+
         }
     }
 }

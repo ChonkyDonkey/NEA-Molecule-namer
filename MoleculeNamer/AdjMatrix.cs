@@ -11,13 +11,16 @@ namespace MoleculeNamer
 {
     public class AdjMatrix
     {
+        Dictionary<int, string> prefix =  
+              new Dictionary<int, string>(){{1, "meth"},{2, "eth"},{3, "prop"},
+              {4,"but"},{5,"pent"},{6,"hex"},{7,"hept"},{8,"oct"},{9,"non"},
+              {10,"dec"},{11,"undec"},{12,"dodec"},{13,"tridec"},{14,"tetradec"},
+              {15,"pentadec"},{16,"hexadec"},{17,"heptadec"},{18,"octadec"},
+              {19,"nonadec"},{20,"icos"}}; 
         List<List<int>> allRoutes = new List<List<int>>();
         List<List<int>> allRouteCombinations = new List<List<int>>(); // intermediate list space
-
         int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
         int count = 0;
-
-
         public AdjMatrix()
         {
             //Default Constructor
@@ -112,7 +115,6 @@ namespace MoleculeNamer
             return longestRoute;
 
         }
-
         //Helper function to dump a route
         private void dumpRoute(List<int> route)
         {
@@ -193,7 +195,6 @@ namespace MoleculeNamer
             backwardsection.Reverse();
             return backwardsection;
         }
-
         private List<int> buildNeighbourlist(int currentNode)
         {
             List<int> neighbourList = new List<int>();
@@ -207,27 +208,22 @@ namespace MoleculeNamer
 
             return neighbourList;
         }
-        private int[] FindConections()
-        {
-            int width = matrix.GetLength(1);
-            int height = matrix.GetLength(0);
-            int[] connectionsarray = new int[height]; //finds the number of connections each  node has
-            for (int j = 0; j <= height; j++)
-            {
-
-                int connections = 0;
-
-                for (int i = 0; i <= width; i++)
-                {
-                    if (matrix[i, j] == '1')
-                    {
-                        connections++;
-                    }
-
+        public string nameMolecule(List<int> MainRoute){
+            string name;
+            int length = MainRoute.Count;
+            /*
+            List<int> nodes = new List<int>();
+            List<int> notInList = new List<int>();
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {nodes.Add(i);}// makes a list of all nodes
+            foreach(int node in nodes){
+                if(!MainRoute.Contains(node)){
+                    notInList.Add(node);// checks for alkyl groups
                 }
-                connectionsarray[j] = connections;
-            }
-            return connectionsarray;
+            }*/
+            name = prefix[length]+ "ane";
+            Console.WriteLine(name);
+            return name;
         }
     }
 }
