@@ -106,7 +106,35 @@ namespace MoleculeNamer.UnitTests
             Assert.IsTrue(_adjMatrix.isLinked(1, 0), "Nodes 1 and 0 should be connected");
             Assert.IsTrue(_adjMatrix.isLinked(0, 2), "Nodes 0 and 2 should be connected");
             Assert.IsTrue(_adjMatrix.isLinked(2, 0), "Nodes 2 and 0 should be connected");
-            //Assert.IsTrue(_adjMatrix.FindLongest().Count() == 3, "3 Connected nodes means that longest chain = 3");
+            Assert.IsTrue(_adjMatrix.FindLongest().Count() == 3, "3 Connected nodes means that longest chain = 3");
+        }
+        [TestMethod]
+        public void AdjMatrix_2_methylPentane(){
+            // 2 <===> 1 <==>3
+            Graph test_graph = new Graph();
+            Node node1 = test_graph.CreateRoot("Node1");
+            Node node2 = test_graph.CreateNode("Node2");
+            Node node3 = test_graph.CreateNode("Node3");
+            Node node4 = test_graph.CreateNode("Node4");
+            Node node5 = test_graph.CreateNode("Node5");
+            Node node6 = test_graph.CreateNode("Node6");
+            node1.AddArc(node2);
+            node2.AddArc(node1);
+            node2.AddArc(node3);
+            node2.AddArc(node5);
+            node3.AddArc(node2);
+            node3.AddArc(node4);
+            node5.AddArc(node2);
+            node5.AddArc(node6);
+            node6.AddArc(node5);
+            _adjMatrix.addGraph(test_graph);
+            Assert.IsTrue(_adjMatrix.getNumNodes() == 6, "6 Node graph will have six nodes");
+            Assert.IsTrue(_adjMatrix.isLinked(0, 1), "Nodes 0 and 1 should be connected");
+            Assert.IsTrue(_adjMatrix.isLinked(2, 1), "Nodes 2 and 1 should be connected");
+            Assert.IsTrue(_adjMatrix.isLinked(4, 1), "Nodes 4 and 1 should be connected");
+            Assert.IsTrue(_adjMatrix.isLinked(4, 5), "Nodes 4 and 5 should be connected");
+            Assert.IsTrue(_adjMatrix.isLinked(2, 3), "Nodes 2 and 3 should be connected");
+            Assert.IsTrue(_adjMatrix.FindLongest().Count() == 5, "5 Connected nodes means that longest chain = 5");
         }
 
     }

@@ -98,7 +98,10 @@ namespace MoleculeNamer
             RouteSoFar1.Add(0);
             FindPaths(RouteSoFar1);
             // longestcalcs
-            foreach (var route in allRoutes)
+            dumpRoute(longestRoute);
+            mergepaths();
+
+            foreach (var route in allRouteCombinations)
             {
                 dumpRoute(route);
                 if (route.Count > longestRoute.Count)
@@ -106,9 +109,6 @@ namespace MoleculeNamer
                     longestRoute = route;
                 }
             }
-            dumpRoute(longestRoute);
-            mergepaths();
-
             return longestRoute;
 
         }
