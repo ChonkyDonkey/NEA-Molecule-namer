@@ -12,6 +12,8 @@ namespace MoleculeNamer
     public class AdjMatrix
     {
         List<List<int>> allRoutes = new List<List<int>>();
+        List<List<int>> allRouteCombinations = new List<List<int>>(); // intermediate list space
+
         int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
         int count = 0;
 
@@ -89,8 +91,7 @@ namespace MoleculeNamer
             // build list of all routes from startnode
 
             List<int> longestRoute = new List<int>();
-            List<List<string>> allRouteCombinations = new List<List<string>>(); // intermediate list space
-
+            
             // Build list of routes from master
             // Using Depth first traversal of the adjacency matrix
             List<int> RouteSoFar1 = new List<int>();
@@ -106,6 +107,7 @@ namespace MoleculeNamer
                 }
             }
             dumpRoute(longestRoute);
+            mergepaths();
 
             return longestRoute;
 
@@ -151,6 +153,45 @@ namespace MoleculeNamer
                 allRoutes.Add(RouteSoFar);
                 Console.WriteLine(allRoutes.Count);
             }
+        }
+
+        private void mergepaths(){
+            foreach(List<int>Primary in allRoutes){
+                allRouteCombinations.Add(Primary);// copies allroutes previously found to thenew list
+                
+                foreach(List<int> secondary in allRoutes){
+                    int matchpos=0;
+                    int i = 0;
+                    if(secondary != Primary){ // makes sure it doesnt compare the identical lists
+
+                        while(Primary[i] == secondary[i])
+                        {
+                            matchpos = i;                            
+                            i++;
+                        }
+                        //creates the merged route
+                        List<int> mergedroute = [.. countBackward(matchpos,Primary), .. countForward(matchpos,secondary)];
+                        dumpRoute(mergedroute);
+                        allRouteCombinations.Add(mergedroute);
+                    }
+                }
+            }
+            
+        }
+        private List<int> countForward(int matchpos, List<int>route){
+            List<int> forwardsection = new List<int>();
+            for(int i = matchpos;i <= route.Count-1;i++){
+                forwardsection.Add(route[i]);
+            }
+            return forwardsection;
+        }
+        private List<int> countBackward(int matchpos,List<int>route){
+            List<int> backwardsection = new List<int>();
+            for(int i = matchpos+1;i <= route.Count-1;i++){
+                backwardsection.Add(route[i]);
+            }
+            backwardsection.Reverse();
+            return backwardsection;
         }
 
         private List<int> buildNeighbourlist(int currentNode)
