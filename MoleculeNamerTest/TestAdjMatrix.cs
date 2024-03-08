@@ -85,6 +85,7 @@ namespace MoleculeNamer.UnitTests
             Assert.IsTrue(_adjMatrix.isLinked(1, 2), "Nodes 1 and 2 should be connected");
             Assert.IsTrue(_adjMatrix.isLinked(2, 1), "Nodes 2 and 1 should be connected");
             Assert.IsTrue(_adjMatrix.FindLongest().Count() == 3, "3 Connected nodes means that longest chain = 3");
+            Assert.IsTrue(_adjMatrix.nameMolecule(_adjMatrix.FindLongest()) == "propane", "the name for this molecule is meant to be propane");
 
         }
 
@@ -107,6 +108,7 @@ namespace MoleculeNamer.UnitTests
             Assert.IsTrue(_adjMatrix.isLinked(0, 2), "Nodes 0 and 2 should be connected");
             Assert.IsTrue(_adjMatrix.isLinked(2, 0), "Nodes 2 and 0 should be connected");
             Assert.IsTrue(_adjMatrix.FindLongest().Count() == 3, "3 Connected nodes means that longest chain = 3");
+            Assert.IsTrue(_adjMatrix.nameMolecule(_adjMatrix.FindLongest()) == "propane", "the name for this molecule is meant to be propane");
         }
         [TestMethod]
         public void AdjMatrix_2_methylPentane(){
@@ -135,6 +137,7 @@ namespace MoleculeNamer.UnitTests
             Assert.IsTrue(_adjMatrix.isLinked(4, 5), "Nodes 4 and 5 should be connected");
             Assert.IsTrue(_adjMatrix.isLinked(2, 3), "Nodes 2 and 3 should be connected");
             Assert.IsTrue(_adjMatrix.FindLongest().Count() == 5, "5 Connected nodes means that longest chain = 5");
+            
         }
 
     }

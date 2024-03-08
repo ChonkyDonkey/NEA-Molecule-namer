@@ -66,10 +66,10 @@ namespace MoleculeNamer
             return adj.FindLongest();
 
         }
-        public string nameMolecule()
+        public string nameMolecule(List<int> longest)
         {
             AdjMatrix adj = new AdjMatrix(this);
-            return adj.nameMolecule(findLongest());
+            return adj.nameMolecule(longest);
 
         }
     }
