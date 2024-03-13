@@ -18,6 +18,8 @@ namespace MoleculeNamer
               {10,"dec"},{11,"undec"},{12,"dodec"},{13,"tridec"},{14,"tetradec"},
               {15,"pentadec"},{16,"hexadec"},{17,"heptadec"},{18,"octadec"},
               {19,"nonadec"},{20,"icos"}}; 
+        Dictionary<int, string> multiplicityPrefix = 
+        new Dictionary<int, string>(){{1,""},{2,"di"},{3,"tri"},{4,"tetra"}};
         Dictionary<string,int> reversedprefix = 
         new Dictionary<string, int>(){{"meth",1},{"eth",2},{"prop",3},{"but",4},
         {"pent",5},{"hex",6},{"hept",7},{"oct",8},{"non",9},{"dec",10},{"undec",11},
@@ -217,7 +219,7 @@ namespace MoleculeNamer
         public string nameMolecule(List<int> MainRoute){
             string name = "";
             int length = MainRoute.Count;
-            
+            int noGiveBLength=0;
             List<int> nodes = new List<int>();
             List<int> notInList = new List<int>();
             for (int i = 0; i < matrix.GetLength(1); i++)
@@ -241,7 +243,7 @@ namespace MoleculeNamer
                 //find length of branch
                 //use length and position to correctly name the molecule
                 int nobranch = 0;
-                List<int> branches = new List<int>();
+                List<int> branches = new List<int>();//records the nodes thatconnects to the branches from the main chain
                 foreach(int excess in notInList){
                     foreach(int listed in MainRoute){
                         if(isLinked(excess,listed)){//checks if it has a direct conection to the main chain
@@ -250,13 +252,35 @@ namespace MoleculeNamer
                         }
                     }
                 }
-                List<int> Blengths = new List<int>(FindBranchLength(branches,MainRoute));
-                List<int> Blengthsordered = new List<int>(Blengths);
+                List<int> Blengths = new List<int>(FindBranchLength(branches,MainRoute));//original list of branch lengths in the order of "branches"
+                List<int> Blengthsordered = new List<int>(Blengths);//copy of Blengths for the prefixes
+                List<int> Blength_positions = new List<int>(Blengths);
                 List<string> Blengthsprefix = new List<string>();  
-                foreach (int bran in Blengths){Blengthsprefix.Add(prefix[bran]);}
+                List<int> positions = new List<int>();// positions on the chain
+                foreach (int bran in Blengths){Blengthsprefix.Add(prefix[bran]);}//same order ad "Blenghts" but encoded by "Prefix"
                 Blengthsprefix.Sort();//putting the alkyl groups in alphabetical order
                 foreach(string thing in Blengthsprefix){Blengthsordered.Add(reversedprefix[thing]);}//now have an ordered numbers alphabetically
-                
+                Blengthsordered.Reverse();//reversed it as it will be adding fron right to left
+                foreach(int branch in Blengthsordered){
+                    //find the number of branches with the given length
+                    noGiveBLength = Blengthsordered.Count(branch); // number of similar branches
+                    name = "-" + multiplicityPrefix[noGiveBLength] + prefix[branch] + name;// adds the miltiplicity and length of the chain
+                    //find all the positions of similar branches
+                    positions.Clear();
+                    
+                    for (int i = 0; i<noGiveBLength;i++){// adds to position the positions of the branches of based on the main chain
+                        
+                        positions.add(Blength_positions.IndexOf(branch)-i+1);//finds the first instance of branches
+                        Blength_positions.Remove(branch);
+                    }
+                    foreach (var item in positions)
+                    {
+                        name = "," + item + name;
+                    }
+                    name.Replace(",","-");// remove(position,number of chracters)
+
+                }
+                name.Replace();
                 return name;
             }
         }
