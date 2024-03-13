@@ -55,22 +55,15 @@ namespace MoleculeNamer
 
         public void PrintMatrix()
         {
-            //AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
             AdjMatrix adj = new AdjMatrix(this);
             adj.PrintMatrix();
         }
-        public List<int> findLongest()
-        {
-            //AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
-            AdjMatrix adj = new AdjMatrix(this);
-            return adj.FindLongest();
 
-        }
-        public string nameMolecule(List<int> longest)
+        public string nameMolecule()
         {
             AdjMatrix adj = new AdjMatrix(this);
+            List<int> longest = new List<int>(adj.FindLongest());
             return adj.nameMolecule(longest);
-
         }
     }
 }

@@ -68,9 +68,7 @@ namespace MoleculeNamer
 
                         Graph graph = molProc.processMolecule(CSF);
                         graph.PrintMatrix();
-                        List<int> longest = new List<int>(graph.findLongest());
-                        graph.nameMolecule(longest);
-
+                        graph.nameMolecule();
 
                         valid = false;
                         break;
