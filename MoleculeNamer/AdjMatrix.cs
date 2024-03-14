@@ -291,22 +291,22 @@ namespace MoleculeNamer
             // find location of branch on main chain
             // find length of branch
             // use length and position to correctly name the molecule
-            string name = "";
+            string name = suffix;
 
             List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
-            List<int> Blengths = new List<int>(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
-            List<int> BLengthsOrdered = new List<int>(Blengths);  // copy of Blengths for the prefixes
-            List<int> BlengthPositions = new List<int>(Blengths);
-            List<string> BlengthsPrefix = new List<string>();
+            List<int> bLengths = new List<int>(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
+            List<int> bLengthsOrdered = new List<int>(bLengths);  // copy of Blengths for the prefixes
+            List<int> bLengthPositions = new List<int>(bLengths);
+            List<string> bLengthsPrefix = new List<string>();
             List<int> positions = new List<int>();// positions on the chain
-            foreach (int bran in Blengths) { BlengthsPrefix.Add(prefixDict[bran]); }  // same order ad "Blengths" but encoded by "Prefix"
-            BlengthsPrefix.Sort();  // putting the alkyl groups in alphabetical order
-            foreach (string thing in BlengthsPrefix) { BLengthsOrdered.Add(reversedprefixDict[thing]); }  // now have an ordered numbers alphabetically
-            BLengthsOrdered.Reverse();  // reversed it as it will be adding fron right to left
-            foreach (int branchLength in BLengthsOrdered)
+            foreach (int bran in bLengths) { bLengthsPrefix.Add(prefixDict[bran]); }  // same order ad "Blengths" but encoded by "Prefix"
+            bLengthsPrefix.Sort();  // putting the alkyl groups in alphabetical order
+            foreach (string thing in bLengthsPrefix) { bLengthsOrdered.Add(reversedprefixDict[thing]); }  // now have an ordered numbers alphabetically
+            bLengthsOrdered.Reverse();  // reversed it as it will be adding fron right to left
+            foreach (int branchLength in bLengthsOrdered)
             {
                 // find the number of branches with the given length
-                int noGiveBLength = countEntriesEqualToValue(BLengthsOrdered, branchLength); // number of similar branches
+                int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
                 name = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + suffix;  // adds the miltiplicity and length of the chain
                 // find all the positions of similar branches
                 positions.Clear();
@@ -314,8 +314,8 @@ namespace MoleculeNamer
                 for (int i = 0; i < noGiveBLength; i++)
                 {
                     // adds to position the positions of the branches of based on the main chain
-                    positions.Add(BlengthPositions.IndexOf(branchLength) - i + 1);//finds the first instance of branches
-                    BlengthPositions.Remove(branchLength);
+                    positions.Add(bLengthPositions.IndexOf(branchLength) - i + 1);//finds the first instance of branches
+                    bLengthPositions.Remove(branchLength);
                 }
                 foreach (var item in positions)
                 {
@@ -350,7 +350,7 @@ namespace MoleculeNamer
         }
 
 
-        private List<int> FindBranchLength(List<int> mainBranchRoots, List<int> visitedNodes)
+        private List<int> FindBranchLength(List<int> branchRoots, List<int> visitedNodes)
         {
             //create a new list that gives a list of branch lengths that directly corrolate to "branches"
             List<int> branchLengths = new List<int>();
@@ -358,7 +358,7 @@ namespace MoleculeNamer
 
             int currentNode;
 
-            foreach (int branchRoot in mainBranchRoots)
+            foreach (int branchRoot in branchRoots)
             {
                 // only works for simple alkyl groups at the moment
                 bool moreToGo = true;
@@ -383,6 +383,7 @@ namespace MoleculeNamer
                                 newVisitedNodes.Add(neighbour);
                                 currentNode = neighbour;
                                 // Invoke recursion here
+
                             }
                         }
                     }

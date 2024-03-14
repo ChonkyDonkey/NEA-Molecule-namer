@@ -10,7 +10,7 @@ namespace MoleculeNamer
 {
     public class MoleculeProcesssor
     {
-         
+
         Graph graph = new Graph();
         Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
 
@@ -49,9 +49,9 @@ namespace MoleculeNamer
             {
                 return false;
             }
-
-
         }
+
+
         private bool validateString_Brackets(string CSF, int bracketNo)
         {
             int bracketTracker = 0;
@@ -62,6 +62,7 @@ namespace MoleculeNamer
                     Trace.WriteLine("validateString_Brackets: Odd numbers of brackets found in " + CSF);
                     return false;
                 }
+
                 for (int i = 0; i <= CSF.Length - 1; i++)
                 {//checks all the brackets pairs up
                     if (CSF[i] == '(')
