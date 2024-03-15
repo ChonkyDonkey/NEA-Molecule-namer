@@ -20,6 +20,7 @@ namespace MoleculeNamer
         // intermediate storage which helps understand the routes through the adjacency matrix
         List<List<int>> allRoutesFromRootNode = new List<List<int>>();
         List<List<int>> allRouteCombinations = new List<List<int>>(); // intermediate list space
+        List<int> mainChain = new List<int>();
 
         // @TODO - Move these chemical naming dictionaries elsewhere
         Dictionary<int, string> prefixDict =
@@ -35,7 +36,7 @@ namespace MoleculeNamer
         {"pent",5},{"hex",6},{"hept",7},{"oct",8},{"non",9},{"dec",10},{"undec",11},
         {"dodec",12},{"tridec",13},{"tetradec",14},{"pentadec",15},{"hexadec",16},
         {"heptadec",17},{"octadec",18},{"nonadec",19},{"icos",20}};
-
+        bool alkylgroup = false;
         public AdjMatrix()
         {
             //Default Constructor
@@ -111,6 +112,7 @@ namespace MoleculeNamer
 
             // Using Depth first traversal of the adjacency matrix
             List<int> RouteSoFar1 = new List<int>();
+            
             RouteSoFar1.Add(0);
             FindPaths(RouteSoFar1);
             // longestcalcs
@@ -125,6 +127,7 @@ namespace MoleculeNamer
                     longestRoute = route;
                 }
             }
+            mainChain.AddRange(longestRoute);
             return longestRoute;
 
         }
@@ -162,12 +165,13 @@ namespace MoleculeNamer
                 }
             }
 
-            if (!validNextFound)
+            if (!validNextFound)                
             {
                 Console.WriteLine("No new neighbour was found - therefore at end of a route");
                 allRoutesFromRootNode.Add(RouteSoFar);
                 Console.WriteLine(allRoutesFromRootNode.Count);
             }
+            
         }
 
 
@@ -240,7 +244,7 @@ namespace MoleculeNamer
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
                 // checks if the current node is linked to another index
-                if (isLinked(node, i))
+                if (isLinked(node, i) && !mainChain.Contains(i))
                 // if (matrix[node, i] == 1)
                 {
                     neighbourList.Add(i);
@@ -328,8 +332,14 @@ namespace MoleculeNamer
 
         public string nameMolecule(List<int> mainRouteNodes)
         {
+            string name;
+            if (alkylgroup == false){
             // seed name based on length of the main Route (e.g. octane)
-            string name = prefixDict[mainRouteNodes.Count] + "ane";
+             name = prefixDict[mainRouteNodes.Count] + "ane";
+            }
+            else{
+             name = prefixDict[mainRouteNodes.Count] + "yl";
+            }
 
             // populate notInMainRoute with all nodes not in the mainRoute
             List<int> notInMainRoute = new List<int>();
@@ -360,35 +370,30 @@ namespace MoleculeNamer
 
             foreach (int branchRoot in branchRoots)
             {
-                // only works for simple alkyl groups at the moment
-                currentNode = branchRoot;
-                // Get the neighboures for the current Node
-                List<int> neighbours = new List<int>(buildNeighbourlist(currentNode));
                 //visitedNodes.Add(branchRoot);
                 // If there are two or more neighbours then we will have a branching situation.
-                if (neighbours.Count >= 2)
+                // build list of all routes from startnode
+                List<int> longestRoute = new List<int>();
+
+                // Using Depth first traversal of the adjacency matrix
+                List<int> RouteSoFar1 = new List<int>();
+                allRoutesFromRootNode.Clear();
+                RouteSoFar1.Add(branchRoot);
+                FindPaths(RouteSoFar1);
+                foreach (var branchRoute in allRoutesFromRootNode)
                 {
-                    // Scan the various neighbours to find the one that hasn't been visited yet
-                    foreach (int neighbour in neighbours)
+                    dumpRoute(route);
+                    if (branchRoute.Count > longestRoute.Count)
                     {
-                        // if the neighbour has been visited
-                        if (!visitedNodes.Contains(neighbour))
-                        {
-                            // neighbour is the first node along a spur in the molecule
-                            route.Add(neighbour);
-                            List<int> newVisitedNodes = new List<int>(visitedNodes);
-                            visitedNodes.Add(neighbour);
-                            //currentNode = neighbour;
-                            
-                            // @TODO Need to traverse along the spur to find its length:
-                            // For now just assume that it is a single node spur
-                            branchLengths.Add(route.Count);
-                        }
+                        longestRoute = branchRoute;
                     }
                 }
+                    
             }
+
             return branchLengths;
         }
+
 
     }
 }
