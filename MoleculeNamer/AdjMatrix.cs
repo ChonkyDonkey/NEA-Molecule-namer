@@ -361,35 +361,31 @@ namespace MoleculeNamer
             foreach (int branchRoot in branchRoots)
             {
                 // only works for simple alkyl groups at the moment
-                bool moreToGo = true;
                 currentNode = branchRoot;
                 // Get the neighboures for the current Node
                 List<int> neighbours = new List<int>(buildNeighbourlist(currentNode));
-                while (moreToGo)
+                //visitedNodes.Add(branchRoot);
+                // If there are two or more neighbours then we will have a branching situation.
+                if (neighbours.Count >= 2)
                 {
-                    //visitedNodes.Add(branchRoot);
-                    // If there are two or more neighbours then we will have a branching situation,.
-                    if (neighbours.Count >= 2)
+                    // Scan the various neighbours to find the one that hasn't been visited yet
+                    foreach (int neighbour in neighbours)
                     {
-                        // Scan the various neighbours
-                        foreach (int neighbour in neighbours)
+                        // if the neighbour has been visited
+                        if (!visitedNodes.Contains(neighbour))
                         {
-                            // if the neighbour has been visited
-                            if (!visitedNodes.Contains(neighbour))
-                            {
-                                // Then this is the start of a spur in the molecule
-                                route.Add(neighbour);
-                                List<int> newVisitedNodes = new List<int>(visitedNodes);
-                                newVisitedNodes.Add(neighbour);
-                                currentNode = neighbour;
-                                // Invoke recursion here
-
-                            }
+                            // neighbour is the first node along a spur in the molecule
+                            route.Add(neighbour);
+                            List<int> newVisitedNodes = new List<int>(visitedNodes);
+                            visitedNodes.Add(neighbour);
+                            //currentNode = neighbour;
+                            
+                            // @TODO Need to traverse along the spur to find its length:
+                            // For now just assume that it is a single node spur
+                            branchLengths.Add(route.Count);
                         }
                     }
-                    else { moreToGo = false; }
                 }
-                branchLengths.Add(route.Count);
             }
             return branchLengths;
         }

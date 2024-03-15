@@ -111,6 +111,7 @@ namespace MoleculeNamer.UnitTests
         }
 
         [TestMethod]
+        // Cases where the number of opening and closing brackets do not match
         public void MoleculeProcesssor_testBasicMoleculeBracketMismatch()
         {
             Graph result = _moleculeProcessor.processMolecule("C(C(C)C");
@@ -118,6 +119,159 @@ namespace MoleculeNamer.UnitTests
 
             result = _moleculeProcessor.processMolecule("CC(C))C");
             Assert.IsTrue(result.getNumNodes() == 0, "CCC(C))C is invalid so no graph will be returned");
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_methane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("C");
+            Assert.AreEqual("methane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_2ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CC");
+            Assert.AreEqual("2ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_3ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCC");
+            Assert.AreEqual("3ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_4ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCC");
+            Assert.AreEqual("4ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_5ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCC");
+            Assert.AreEqual("5ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_6ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCC");
+            Assert.AreEqual("6ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_7ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCC");
+            Assert.AreEqual("7ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_8ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCC");
+            Assert.AreEqual("8ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_9ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCC");
+            Assert.AreEqual("9ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_10ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCC");
+            Assert.AreEqual("10ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_11ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCC");
+            Assert.AreEqual("11ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_12ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCC");
+            Assert.AreEqual("12ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_13ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCC");
+            Assert.AreEqual("13ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_14ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCC");
+            Assert.AreEqual("14ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_15ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCC");
+            Assert.AreEqual("15ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_16ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCCC");
+            Assert.AreEqual("16ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_17ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCCCC");
+            Assert.AreEqual("17ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_18ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCCCCC");
+            Assert.AreEqual("18ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_19ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCCCCCC");
+            Assert.AreEqual("19ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_20ane()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CCCCCCCCCCCCCCCCCCCC");
+            Assert.AreEqual("20ane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_blah()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("C(CC)C");
+            Assert.AreEqual("somemolecule name", graph.nameMolecule());
+        }
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_blah2()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CC(CC)CC");
+            Assert.AreEqual("somemolecule name", graph.nameMolecule());
         }
     }
 }
