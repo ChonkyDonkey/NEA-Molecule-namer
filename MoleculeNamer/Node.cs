@@ -9,7 +9,7 @@ namespace MoleculeNamer
     public class Node
     {
         public string Name;
-        public List<Arc> Arcs = new List<Arc>();
+        public List<Arc> Arcs = new();
 
         public Node(string name)
         {

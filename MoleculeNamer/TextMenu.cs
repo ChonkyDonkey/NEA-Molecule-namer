@@ -64,7 +64,7 @@ namespace MoleculeNamer
                     case "1":
                         SFInput();
                         CSF = final;
-                        MoleculeProcesssor molProc = new MoleculeProcesssor();  //creating an event og molecule process
+                        MoleculeProcesssor molProc = new();  //creating an event og molecule process
 
                         Graph graph = molProc.processMolecule(CSF);
                         //graph.PrintMatrix();

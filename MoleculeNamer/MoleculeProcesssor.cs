@@ -11,8 +11,8 @@ namespace MoleculeNamer
     public class MoleculeProcesssor
     {
 
-        Graph graph = new Graph();
-        Dictionary<string, Node> molecule = new Dictionary<string, Node>(); // this makes a dictionary of all the nodes
+        Graph graph = new();
+        Dictionary<string, Node> molecule = new(); // this makes a dictionary of all the nodes
 
         private bool validateString_Char(string CSF)
         {
@@ -105,13 +105,10 @@ namespace MoleculeNamer
             make sure you dont have more than 2 '()' following a 'C' unless it is the start node, then it can be 3
             make sure input != Null                                                                  done
             */
-            bool valid = true;
-            valid = validateString_Char(CSF);
-
-
-
+            bool valid = validateString_Char(CSF);
             return valid;
         }
+
         private void findArc(string CSF, Dictionary<string, Node> molecule)
         {
             // for (int i = 0; i <= count-1; i++)
@@ -196,8 +193,6 @@ namespace MoleculeNamer
 
                     ogNode.AddArc(connectingNode, 1);
                 }
-
-
             } // add code to include "C ( C"
             else if (charValue == '(')
             {
@@ -211,10 +206,9 @@ namespace MoleculeNamer
                 Node connectingNode = molecule[Connection];
 
                 ogNode.AddArc(connectingNode, 1);
-
-
             }
         }
+        
         static void findArcRight(int i, string CSF, Dictionary<string, Node> molecule, int trueCarbon)
         {
             //Console.WriteLine("find arc right");

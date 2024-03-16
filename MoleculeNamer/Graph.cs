@@ -9,8 +9,8 @@ namespace MoleculeNamer
 {
     public class Graph
     {
-        public Node Root;
-        public List<Node> AllNodes = new List<Node>();
+        public Node? Root;
+        public List<Node> AllNodes = new();
 
         public Node CreateRoot(string name)
         {
@@ -55,14 +55,14 @@ namespace MoleculeNamer
 
         public void PrintMatrix()
         {
-            AdjMatrix adj = new AdjMatrix(this);
+            AdjMatrix adj = new(this);
             adj.PrintMatrix();
         }
 
         public string nameMolecule()
         {
-            AdjMatrix adj = new AdjMatrix(this);
-            List<int> longest = new List<int>(adj.FindLongest());
+            AdjMatrix adj = new(this);
+            List<int> longest = new(adj.FindLongest());
             return adj.nameMolecule(longest);
         }
     }
