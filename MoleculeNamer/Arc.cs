@@ -9,7 +9,7 @@ namespace MoleculeNamer
     public class Arc
     {
         public int Weight;
-        public Node Parent;
-        public Node Child;
+        public Node? Parent;
+        public Node? Child;
     }
 }

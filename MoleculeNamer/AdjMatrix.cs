@@ -18,9 +18,9 @@ namespace MoleculeNamer
 
         // @TODO - These structures should be in a higher level function, rather than in the adjacency matrix itself
         // intermediate storage which helps understand the routes through the adjacency matrix
-        List<List<int>> allRoutesFromRootNode = new();
-        List<List<int>> allRouteCombinations = new(); // intermediate list space
-        List<int> mainChain = new();
+        readonly List<List<int>> _allRoutesFromRootNode = [];
+        readonly List<List<int>> _allRouteCombinations = new(); // intermediate list space
+        readonly List<int> _mainChain = new();
 
         // @TODO - Move these chemical naming dictionaries elsewhere
         readonly Dictionary<int, string> prefixDict =
@@ -36,9 +36,11 @@ namespace MoleculeNamer
                 {"pent",5},{"hex",6},{"hept",7},{"oct",8},{"non",9},{"dec",10},{"undec",11},
                 {"dodec",12},{"tridec",13},{"tetradec",14},{"pentadec",15},{"hexadec",16},
                 {"heptadec",17},{"octadec",18},{"nonadec",19},{"icos",20}};
-        bool alkylgroup = false;
+        bool alkylgroup = false;  // will not be readonly shortly
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public AdjMatrix()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             //Default Constructor
         }
@@ -120,7 +122,7 @@ namespace MoleculeNamer
             dumpRoute(longestRoute);
             findAllRouteCombinations();
 
-            foreach (var route in allRouteCombinations)
+            foreach (var route in _allRouteCombinations)
             {
                 dumpRoute(route);
                 if (route.Count > longestRoute.Count)
@@ -128,7 +130,7 @@ namespace MoleculeNamer
                     longestRoute = route;
                 }
             }
-            mainChain.AddRange(longestRoute);
+            _mainChain.AddRange(longestRoute);
             return longestRoute;
 
         }
@@ -169,8 +171,8 @@ namespace MoleculeNamer
             if (!validNextFound)
             {
                 Console.WriteLine("No new neighbour was found - therefore at end of a route");
-                allRoutesFromRootNode.Add(RouteSoFar);
-                Console.WriteLine(allRoutesFromRootNode.Count);
+                _allRoutesFromRootNode.Add(RouteSoFar);
+                Console.WriteLine(_allRoutesFromRootNode.Count);
             }
 
         }
@@ -184,11 +186,11 @@ namespace MoleculeNamer
         // - is not checking for repeats or reverse path
         private void findAllRouteCombinations()
         {
-            foreach (List<int> primary in allRoutesFromRootNode)
+            foreach (List<int> primary in _allRoutesFromRootNode)
             {
-                allRouteCombinations.Add(primary);// copies allroutes previously found to thenew list
+                _allRouteCombinations.Add(primary);// copies allroutes previously found to thenew list
 
-                foreach (List<int> secondary in allRoutesFromRootNode)
+                foreach (List<int> secondary in _allRoutesFromRootNode)
                 {
                     int matchpos = 0;
                     int i = 0;
@@ -206,7 +208,7 @@ namespace MoleculeNamer
                         // creates the merged route
                         List<int> mergedroute = [.. countBackward(matchpos, primary), .. countForward(matchpos, secondary)];
                         dumpRoute(mergedroute);
-                        allRouteCombinations.Add(mergedroute);//adds the created route to a lisst of every route
+                        _allRouteCombinations.Add(mergedroute);//adds the created route to a lisst of every route
                     }
                 }
             }
@@ -245,7 +247,7 @@ namespace MoleculeNamer
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
                 // checks if the current node is linked to another index
-                if (isLinked(node, i) && !mainChain.Contains(i))
+                if (isLinked(node, i) && !_mainChain.Contains(i))
                 // if (matrix[node, i] == 1)
                 {
                     neighbourList.Add(i);
@@ -378,10 +380,10 @@ namespace MoleculeNamer
 
                 // Using Depth first traversal of the adjacency matrix
                 List<int> RouteSoFar1 = new();
-                allRoutesFromRootNode.Clear();
+                _allRoutesFromRootNode.Clear();
                 RouteSoFar1.Add(branchRoot);
                 FindPaths(RouteSoFar1);
-                foreach (var branchRoute in allRoutesFromRootNode)
+                foreach (var branchRoute in _allRoutesFromRootNode)
                 {
                     dumpRoute(route);
                     if (branchRoute.Count > longestRoute.Count)
