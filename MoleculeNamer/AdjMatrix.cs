@@ -302,7 +302,7 @@ namespace MoleculeNamer
 
             List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
             List<int> bLengths = new(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
-            List<int> bLengthsOrdered = new(bLengths);  // copy of Blengths for the prefixes
+            List<int> bLengthsOrdered = new();  // copy of Blengths for the prefixes
             List<int> bLengthPositions = new(bLengths);
             List<string> bLengthsPrefix = new();
             List<int> positions = new();// positions on the chain
@@ -314,21 +314,24 @@ namespace MoleculeNamer
             {
                 // find the number of branches with the given length
                 int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
-                name = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + suffix;  // adds the miltiplicity and length of the chain
+                name = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + "yl" + suffix;  // adds the miltiplicity and length of the chain
                 // find all the positions of similar branches
                 positions.Clear();
-
-                for (int i = 0; i < noGiveBLength; i++)
-                {
-                    // adds to position the positions of the branches of based on the main chain
-                    positions.Add(bLengthPositions.IndexOf(branchLength) - i + 1);//finds the first instance of branches
-                    bLengthPositions.Remove(branchLength);
+                foreach(int a in notInMainRoute){
+                    foreach(int b in _mainChain){
+                        if(isLinked(a,b)){
+                            positions.Add(b);
+                        }
+                    }
                 }
+
+
                 foreach (var item in positions)
                 {
-                    name = "," + item + name;
+                    int intermediate = _mainChain.IndexOf(item)+1;
+                    name = "," + intermediate + name;
                 }
-                name.Replace(",", "-"); // remove(position,number of chracters)
+                name = name.Substring(1); // remove(position,number of chracters)
             }
             return name;
         }
@@ -391,6 +394,7 @@ namespace MoleculeNamer
                         longestRoute = branchRoute;
                     }
                 }
+                branchLengths.Add(longestRoute.Count-1);
             }
 
             return branchLengths;

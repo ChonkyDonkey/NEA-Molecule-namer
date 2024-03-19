@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MoleculeNamer;
+//using MoleculeNamer;
 
 namespace MoleculeNamer.UnitTests
 {
