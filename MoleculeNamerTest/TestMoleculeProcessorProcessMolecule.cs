@@ -268,10 +268,37 @@ namespace MoleculeNamer.UnitTests
             Assert.AreEqual("butane", graph.nameMolecule());
         }
         [TestMethod]
-        public void MoleculeProcesssor_testNameMolecule_blah2()
+        public void MoleculeProcesssor_testNameMolecule_3_methylpentane()
         {
             Graph graph = _moleculeProcessor.processMolecule("CC(CC)CC");
             Assert.AreEqual("3-methylpentane", graph.nameMolecule());
+        }
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_blah()
+        {
+            Graph graph = _moleculeProcessor.processMolecule("CC(CCC)CC");
+            Assert.AreEqual("3-methylhexane", graph.nameMolecule());
+        }
+
+        [TestMethod]
+        public void MoleculeProcesssor_testNameMolecule_blah2()
+        {
+            // @TODO /\/\
+            //        /\_
+            Graph graph = _moleculeProcessor.processMolecule("CC(CC)(CC)CC");
+            AdjMatrix adjMatrix = new(graph);
+            Assert.IsTrue(adjMatrix.getNumNodes() == 8, "three Node graph will have three nodes");
+            Assert.IsTrue(adjMatrix.isLinked(0, 1), "Nodes 0 and 1 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(1, 2), "Nodes 1 and 2 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(1, 4), "Nodes 1 and 4 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(1, 6), "Nodes 1 and 6 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(2, 3), "Nodes 2 and 3 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(4, 5), "Nodes 4 and 5 should be connected");
+            Assert.IsTrue(adjMatrix.isLinked(6, 7), "Nodes 6 and 7 should be connected");
+            List<int> Longest = new(adjMatrix.FindLongest());
+            Assert.IsTrue(Longest.Count() == 5, "5 Connected nodes means that longest chain = 5");
+
+            Assert.AreEqual("3-ethyl-3-methylpentane", graph.nameMolecule());
         }
     }
 }

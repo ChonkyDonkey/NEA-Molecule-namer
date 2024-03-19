@@ -67,7 +67,7 @@ namespace MoleculeNamer
                         MoleculeProcesssor molProc = new();  //creating an event og molecule process
 
                         Graph graph = molProc.processMolecule(CSF);
-                        //graph.PrintMatrix();
+                        graph.PrintMatrix();
                         Console.WriteLine(graph.nameMolecule());
 
                         valid = false;
