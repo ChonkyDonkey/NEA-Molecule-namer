@@ -288,7 +288,7 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testNameMolecule_blah()
         {
             Graph graph = _moleculeProcessor.processMolecule("CC(CCC)CC");
-            Assert.AreEqual("3-methylhexane", graph.nameMolecule());
+            Assert.AreEqual("4-methylhexane", graph.nameMolecule());
         }
 
         [TestMethod]

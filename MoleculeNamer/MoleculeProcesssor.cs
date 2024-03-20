@@ -155,7 +155,7 @@ namespace MoleculeNamer
                 Node ogNode = molecule[OGNodeName];
                 Node connectingNode = molecule[Connection];// the node that the code has identified as an arc
 
-                ogNode.AddArc(connectingNode, trueCarbon);
+                ogNode.AddArc(connectingNode);
             }
             else if (charValue == ')')
             {
@@ -164,6 +164,7 @@ namespace MoleculeNamer
                 int t = 1;
                 int z;
                 bool Valid = true;
+                int no_Carbon = 0;
                 while (Valid)// iterates the position in the code until the bracket is paired revealing the arc
                 {
                     t++;
@@ -180,6 +181,7 @@ namespace MoleculeNamer
                     {
                         cBracketCount++;
                     }
+                    else if (testCharValue == 'C'){no_Carbon++;}
                     if(cBracketCount==0 && CSF[z] == 'C'){Valid = false;}
                 }  // check for "))" as an ending
 
@@ -187,14 +189,14 @@ namespace MoleculeNamer
                 // if (testCharValue == 'C')
                 // {
                     string OGNodeName = "C" + trueCarbon;
-                    int Left = trueCarbon - t;
+                    int Left = trueCarbon - no_Carbon;
 
                     string Connection = "C" + Left;
 
                     Node ogNode = molecule[OGNodeName];
                     Node connectingNode = molecule[Connection];
 
-                    ogNode.AddArc(connectingNode, 1);
+                    ogNode.AddArc(connectingNode);
                 //}
             } // add code to include "C ( C"
             else if (charValue == '(')
