@@ -134,7 +134,7 @@ namespace MoleculeNamer
                     noBrack++;
                 }
 
-                //graph.PrintMatrix();
+                graph.PrintMatrix();
             }
         }
 
@@ -155,14 +155,16 @@ namespace MoleculeNamer
                 Node ogNode = molecule[OGNodeName];
                 Node connectingNode = molecule[Connection];// the node that the code has identified as an arc
 
-                ogNode.AddArc(connectingNode, 1);
+                ogNode.AddArc(connectingNode, trueCarbon);
             }
             else if (charValue == ')')
             {
+                
                 int cBracketCount = 1;
                 int t = 1;
                 int z;
-                while (cBracketCount > 0)// iterates the position in the code until the bracket is paired revealing the arc
+                bool Valid = true;
+                while (Valid)// iterates the position in the code until the bracket is paired revealing the arc
                 {
                     t++;
                     z = i - t;
@@ -178,11 +180,12 @@ namespace MoleculeNamer
                     {
                         cBracketCount++;
                     }
+                    if(cBracketCount==0 && CSF[z] == 'C'){Valid = false;}
                 }  // check for "))" as an ending
 
-                testCharValue = CSF[i - t];
-                if (testCharValue == 'C')
-                {
+                // testCharValue = CSF[i - t];
+                // if (testCharValue == 'C')
+                // {
                     string OGNodeName = "C" + trueCarbon;
                     int Left = trueCarbon - t;
 
@@ -192,13 +195,28 @@ namespace MoleculeNamer
                     Node connectingNode = molecule[Connection];
 
                     ogNode.AddArc(connectingNode, 1);
-                }
+                //}
             } // add code to include "C ( C"
             else if (charValue == '(')
             {
+                int bracketNo =0;
+                char conectionvalue = charValue;
+                int x = 2;
+                int no_Carbon = 0;
+                bool Valid = true;
+                
+                while(Valid){
+                    conectionvalue = CSF[i - x];
+                    
+                    if(conectionvalue == 'C'){no_Carbon++;}
+                    else if(conectionvalue== ')'){bracketNo++;}
+                    else if(conectionvalue== '('){bracketNo--;}
+                    x++;
+                    if(conectionvalue == 'C'&& bracketNo==0){Valid=false;}
+                }
 
                 string OGNodeName = "C" + trueCarbon;
-                int Left = trueCarbon - 1;
+                int Left = trueCarbon - no_Carbon;
 
                 string Connection = "C" + Left;
 
@@ -228,7 +246,7 @@ namespace MoleculeNamer
                 //Console.WriteLine("right");
             }
             else if (charValue == ')') { }
-            else
+            else if (charValue == '(')
             {
                 /*counts the number of open brackets and subtracts the number of closed
                  letting you know when that first bracket set ends and where the 

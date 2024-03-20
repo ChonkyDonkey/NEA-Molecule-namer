@@ -119,7 +119,7 @@ namespace MoleculeNamer
             RouteSoFar1.Add(0);
             FindPaths(RouteSoFar1);
             // longestcalcs
-            dumpRoute(longestRoute);
+            dumpRoute(longestRoute);//helper
             findAllRouteCombinations();
 
             foreach (var route in _allRouteCombinations)
@@ -328,6 +328,7 @@ namespace MoleculeNamer
 
                 foreach (var item in positions)
                 {
+                    
                     int intermediate = _mainChain.IndexOf(item)+1;
                     name = "," + intermediate + name;
                 }
