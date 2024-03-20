@@ -298,23 +298,29 @@ namespace MoleculeNamer
             // find location of branch on main chain
             // find length of branch
             // use length and position to correctly name the molecule
-            string name = suffix;
+            
 
             List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
             List<int> bLengths = new(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
             List<int> bLengthsOrdered = new();  // copy of Blengths for the prefixes
             List<int> bLengthPositions = new(bLengths);
             List<string> bLengthsPrefix = new();
+            int[] current_alkyl_Groups = new int[21];
             List<int> positions = new();// positions on the chain
             foreach (int bran in bLengths) { bLengthsPrefix.Add(prefixDict[bran]); }  // same order ad "Blengths" but encoded by "Prefix"
             bLengthsPrefix.Sort();  // putting the alkyl groups in alphabetical order
             foreach (string thing in bLengthsPrefix) { bLengthsOrdered.Add(reversedprefixDict[thing]); }  // now have an ordered numbers alphabetically
             bLengthsOrdered.Reverse();  // reversed it as it will be adding fron right to left
+            for(int setting = 0; setting != current_alkyl_Groups.Length;setting++){current_alkyl_Groups[setting] = 0;}
+            foreach(int b in bLengths){
+                current_alkyl_Groups[b]++;
+            }
             foreach (int branchLength in bLengthsOrdered)
             {
                 // find the number of branches with the given length
-                int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
-                name = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + "yl" + suffix;  // adds the miltiplicity and length of the chain
+                //int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
+                int noGiveBLength = current_alkyl_Groups[branchLength];
+                suffix = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + "yl" + suffix;  // adds the miltiplicity and length of the chain
                 // find all the positions of similar branches
                 positions.Clear();
                 foreach(int a in notInMainRoute){
@@ -324,17 +330,18 @@ namespace MoleculeNamer
                         }
                     }
                 }
-
-
+                
                 foreach (var item in positions)
                 {
                     
                     int intermediate = _mainChain.IndexOf(item)+1;
-                    name = "," + intermediate + name;
+                    suffix = "," + intermediate + suffix;
                 }
-                name = name.Substring(1); // remove(position,number of chracters)
+                suffix = suffix.Substring(1); // remove(position,number of chracters)
+
+
             }
-            return name;
+            return suffix;
         }
 
         public string nameMolecule(List<int> mainRouteNodes)
