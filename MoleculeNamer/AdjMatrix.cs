@@ -303,7 +303,6 @@ namespace MoleculeNamer
             List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
             List<int> bLengths = new(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
             List<int> bLengthsOrdered = new();  // copy of Blengths for the prefixes
-            List<int> bLengthPositions = new(bLengths);
             List<string> bLengthsPrefix = new();
             int[] current_alkyl_Groups = new int[21];
             List<int> positions = new();// positions on the chain
@@ -315,22 +314,28 @@ namespace MoleculeNamer
             foreach(int b in bLengths){
                 current_alkyl_Groups[b]++;
             }
-            foreach (int branchLength in bLengthsOrdered)
+            List<int> copy_nodesAdjacentToRoute = new(nodesAdjacentToRoute);
+            List<int> copy_bLengths = new (bLengths);
+            //make the list only one of each branch
+            var noDupes = bLengthsOrdered.Distinct().ToList();
+            foreach (int branchLength in noDupes)
             {
                 // find the number of branches with the given length
                 //int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
                 int noGiveBLength = current_alkyl_Groups[branchLength];
+                if(bLengthsOrdered.IndexOf(branchLength) >=1){//if multiple different alkyl groupt seperate them by '-'
+                    suffix = "-" + suffix;
+                }
                 suffix = "-" + multiplicityPrefixDict[noGiveBLength] + prefixDict[branchLength] + "yl" + suffix;  // adds the miltiplicity and length of the chain
                 // find all the positions of similar branches
                 positions.Clear();
-                foreach(int a in notInMainRoute){
-                    foreach(int b in _mainChain){
-                        if(isLinked(a,b)){
-                            positions.Add(b);
-                        }
+                List<int> intermediateList = new();
+                for(int i = 0; i< noDupes.Count;i++){
+                    if(noDupes[i] == branchLength){
+                        positions.Add(copy_nodesAdjacentToRoute[i]);
+                        intermediateList.Add(i);
                     }
                 }
-                
                 foreach (var item in positions)
                 {
                     
@@ -339,8 +344,19 @@ namespace MoleculeNamer
                 }
                 suffix = suffix.Substring(1); // remove(position,number of chracters)
 
+                // foreach(int a in notInMainRoute){
+                //     foreach(int b in _mainChain){
+                //         if(isLinked(a,b)){
+                //             positions.Add(b);
+                //         }
+                //     }
+                //     intermediateList.Add(a);
+                // }
+                //_mainChain.AddRange(intermediateList);
+
 
             }
+            
             return suffix;
         }
 
@@ -382,27 +398,25 @@ namespace MoleculeNamer
             List<int> branchLengths = new();
             List<int> route = new();
 
+            _allRoutesFromRootNode.Clear();
             foreach (int branchRoot in branchRoots)
             {
                 //visitedNodes.Add(branchRoot);
                 // If there are two or more neighbours then we will have a branching situation.
                 // build list of all routes from startnode
-                List<int> longestRoute = new();
+                
 
                 // Using Depth first traversal of the adjacency matrix
                 List<int> RouteSoFar1 = new();
-                _allRoutesFromRootNode.Clear();
                 RouteSoFar1.Add(branchRoot);
                 FindPaths(RouteSoFar1);
-                foreach (var branchRoute in _allRoutesFromRootNode)
-                {
-                    dumpRoute(route);
-                    if (branchRoute.Count > longestRoute.Count)
-                    {
-                        longestRoute = branchRoute;
-                    }
-                }
-                branchLengths.Add(longestRoute.Count-1);
+                
+            }
+            foreach (var branchRoute in _allRoutesFromRootNode)
+            {
+                dumpRoute(route);
+                    
+                branchLengths.Add(branchRoute.Count-1);
             }
 
             return branchLengths;

@@ -330,7 +330,7 @@ namespace MoleculeNamer.UnitTests
             List<int> Longest = new(adjMatrix.FindLongest());
             Assert.IsTrue(Longest.Count() == 6, "6 Connected nodes means that longest chain = 6");
 
-            Assert.AreEqual("3-ethyl-4-methylhexane", graph.nameMolecule());
+            Assert.AreEqual("4-ethyl-3-methylhexane", graph.nameMolecule());
         }
     }
 }
