@@ -299,9 +299,11 @@ namespace MoleculeNamer
             // find length of branch
             // use length and position to correctly name the molecule
             
-
+            // Find Nodes adjacent to route
+            // find location of branch on main chain
             List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
-            List<int> bLengths = new(FindBranchLength(nodesAdjacentToRoute, mainRouteNodes));  // original list of branch lengths in the order of "branches"
+            var noDupeAdj = nodesAdjacentToRoute.Distinct().ToList();//ensures roots arent repeated leading to repeated alkyl groups
+            List<int> bLengths = new(FindBranchLength(noDupeAdj, mainRouteNodes));  // original list of branch lengths in the order of "branches"
             List<int> bLengthsOrdered = new();  // copy of Blengths for the prefixes
             List<string> bLengthsPrefix = new();
             int[] current_alkyl_Groups = new int[21];
@@ -311,11 +313,9 @@ namespace MoleculeNamer
             foreach (string thing in bLengthsPrefix) { bLengthsOrdered.Add(reversedprefixDict[thing]); }  // now have an ordered numbers alphabetically
             bLengthsOrdered.Reverse();  // reversed it as it will be adding fron right to left
             for(int setting = 0; setting != current_alkyl_Groups.Length;setting++){current_alkyl_Groups[setting] = 0;}
-            foreach(int b in bLengths){
-                current_alkyl_Groups[b]++;
-            }
+            foreach(int b in bLengths){current_alkyl_Groups[b]++;}//puts the number of occurances of a specific alkyl group
             List<int> copy_nodesAdjacentToRoute = new(nodesAdjacentToRoute);
-            List<int> copy_bLengths = new (bLengths);
+            
             //make the list only one of each branch
             var noDupes = bLengthsOrdered.Distinct().ToList();
             foreach (int branchLength in noDupes)
