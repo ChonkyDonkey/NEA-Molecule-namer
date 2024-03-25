@@ -8,7 +8,7 @@ namespace MoleculeNamer
         public string final = "";
         private static string SFconversion(string First)
         {
-            Console.WriteLine("test");
+            
             string final = "";
             for (int i = 0; i < First.Length; i++)
             {
@@ -16,16 +16,15 @@ namespace MoleculeNamer
                 {
 
                     final = final + First[i];
-                    Console.WriteLine(final);
+                    
 
 
-                    //char[] nameArray = {'A', 'l', 'i', 'c', 'e'};
-                    //string name = new string(nameArray);
+                    
 
                 }
             }
             return final;
-            //Console.WriteLine("chick2");
+            
         }
         private void SFInput()
         {
@@ -52,35 +51,14 @@ namespace MoleculeNamer
 
         public void startMenu()
         {
-            bool valid = true;
-            do
-            {
-                string CSF;
-                Console.WriteLine("what is your choice? \n type '1' to input a custom structural formula: \n type '2' to list all molecules stored: ");
-                string? choice = Console.ReadLine();
+            string CSF;       
+            SFInput();
+            CSF = final;
+            MoleculeProcesssor molProc = new();  //creating an event og molecule process
 
-                switch (choice)
-                {
-                    case "1":
-                        SFInput();
-                        CSF = final;
-                        MoleculeProcesssor molProc = new();  //creating an event og molecule process
-
-                        Graph graph = molProc.processMolecule(CSF);
-                        graph.PrintMatrix();
-                        Console.WriteLine(graph.nameMolecule());
-
-                        valid = false;
-                        break;
-                    case "2":
-                        Console.WriteLine("Got 2");
-                        break;
-                    default:
-                        Console.WriteLine("na ah");
-                        break;
-                }
-
-            } while (valid);
+            Graph graph = molProc.processMolecule(CSF);
+            //graph.PrintMatrix();
+            Console.WriteLine(graph.nameMolecule());
         }
     }
 }

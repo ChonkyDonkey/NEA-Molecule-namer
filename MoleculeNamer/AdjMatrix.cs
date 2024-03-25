@@ -73,7 +73,7 @@ namespace MoleculeNamer
             return (matrix[i, j] is not null);
         }
 
-        public void PrintMatrix()
+        public void PrintMatrix()//test function that helps to visualise the adj matrix
         {
             Console.Write("       ");
             for (int i = 0; i < count; i++)
@@ -119,12 +119,12 @@ namespace MoleculeNamer
             RouteSoFar1.Add(0);
             FindPaths(RouteSoFar1);
             // longestcalcs
-            dumpRoute(longestRoute);//helper
+            //dumpRoute(longestRoute);//helper
             findAllRouteCombinations();
 
             foreach (var route in _allRouteCombinations)
             {
-                dumpRoute(route);
+                //dumpRoute(route);
                 if (route.Count > longestRoute.Count)
                 {
                     longestRoute = route;
@@ -162,7 +162,7 @@ namespace MoleculeNamer
                     List<int> RouteSoFar1 = new(RouteSoFar);
                     // add the neighbout to it
                     RouteSoFar1.Add(a);
-                    dumpRoute(RouteSoFar1);
+                    //dumpRoute(RouteSoFar1);
                     // now test for this list
                     FindPaths(RouteSoFar1);
                 }
@@ -170,9 +170,9 @@ namespace MoleculeNamer
 
             if (!validNextFound)
             {
-                Console.WriteLine("No new neighbour was found - therefore at end of a route");
+                //Console.WriteLine("No new neighbour was found - therefore at end of a route");
                 _allRoutesFromRootNode.Add(RouteSoFar);
-                Console.WriteLine(_allRoutesFromRootNode.Count);
+                //Console.WriteLine(_allRoutesFromRootNode.Count);
             }
 
         }
@@ -207,7 +207,7 @@ namespace MoleculeNamer
 
                         // creates the merged route
                         List<int> mergedroute = [.. countBackward(matchpos, primary), .. countForward(matchpos, secondary)];
-                        dumpRoute(mergedroute);
+                        //dumpRoute(mergedroute);
                         _allRouteCombinations.Add(mergedroute);//adds the created route to a lisst of every route
                     }
                 }
@@ -248,7 +248,6 @@ namespace MoleculeNamer
             {
                 // checks if the current node is linked to another index
                 if (isLinked(node, i) && !_mainChain.Contains(i))
-                // if (matrix[node, i] == 1)
                 {
                     neighbourList.Add(i);
                 }
@@ -279,18 +278,6 @@ namespace MoleculeNamer
         }
 
 
-        private int countEntriesEqualToValue(List<int> list, int valueToFind)
-        {
-            int count = 0;
-            foreach (int value in list)
-            {
-                if (value == valueToFind)
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
 
         private string extendNameWithAlkylGroups(string suffix, List<int> mainRouteNodes, List<int> notInMainRoute)
         {
@@ -321,7 +308,6 @@ namespace MoleculeNamer
             foreach (int branchLength in noDupes)
             {
                 // find the number of branches with the given length
-                //int noGiveBLength = countEntriesEqualToValue(bLengthsOrdered, branchLength); // number of similar branches
                 int noGiveBLength = current_alkyl_Groups[branchLength];
                 if(bLengthsOrdered.IndexOf(branchLength) >=1){//if multiple different alkyl groupt seperate them by '-'
                     suffix = "-" + suffix;
@@ -342,19 +328,7 @@ namespace MoleculeNamer
                     int intermediate = _mainChain.IndexOf(item)+1;
                     suffix = "," + intermediate + suffix;
                 }
-                suffix = suffix.Substring(1); // remove(position,number of chracters)
-
-                // foreach(int a in notInMainRoute){
-                //     foreach(int b in _mainChain){
-                //         if(isLinked(a,b)){
-                //             positions.Add(b);
-                //         }
-                //     }
-                //     intermediateList.Add(a);
-                // }
-                //_mainChain.AddRange(intermediateList);
-
-
+                suffix = suffix.Substring(1); // remove(position,number of chracters
             }
             
             return suffix;
@@ -414,7 +388,7 @@ namespace MoleculeNamer
             }
             foreach (var branchRoute in _allRoutesFromRootNode)
             {
-                dumpRoute(route);
+                //dumpRoute(route);
                     
                 branchLengths.Add(branchRoute.Count-1);
             }
