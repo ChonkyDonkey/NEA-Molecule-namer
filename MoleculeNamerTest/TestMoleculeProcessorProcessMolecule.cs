@@ -314,8 +314,9 @@ namespace MoleculeNamer.UnitTests
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_blah3()
         {
-            // @TODO /\/\
-            //        /\_
+            //          | 
+            // @TODO /\/\/
+            //         \_
             Graph graph = _moleculeProcessor.processMolecule("CC(CC)C(CC)CC");
             AdjMatrix adjMatrix = new(graph);
             Assert.IsTrue(adjMatrix.getNumNodes() == 9, "three Node graph will have three nodes");

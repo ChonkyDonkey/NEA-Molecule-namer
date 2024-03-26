@@ -116,7 +116,9 @@ namespace MoleculeNamer.UnitTests
         [TestMethod]
         public void AdjMatrix_2_methylPentane()
         {
-            // 2 <===> 1 <==>3
+            //       /
+            //      /\/\
+            //        
             Graph test_graph = new();
             Node node1 = test_graph.CreateRoot("Node1");
             Node node2 = test_graph.CreateNode("Node2");
