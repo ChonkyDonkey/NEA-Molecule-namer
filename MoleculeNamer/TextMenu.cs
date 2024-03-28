@@ -7,7 +7,7 @@ namespace MoleculeNamer
     {
         public string final = "";
         private static string SFconversion(string First)
-        {
+        {//objective Must 1a
             
             string final = "";
             for (int i = 0; i < First.Length; i++)
@@ -56,7 +56,7 @@ namespace MoleculeNamer
             CSF = final;
             MoleculeProcesssor molProc = new();  //creating an event og molecule process
 
-            Graph graph = molProc.processMolecule(CSF);
+            Graph graph = molProc.ProcessMolecule(CSF);
             //graph.PrintMatrix();
             Console.WriteLine(graph.nameMolecule());
         }

@@ -42,30 +42,30 @@ namespace MoleculeNamer
             //Default Constructor
         }
         public AdjMatrix(int?[,] _adj, int _count)
-        {
+        {//objective must 2A
             matrix = _adj;
             count = _count;
         }
         public AdjMatrix(Graph _graph)
-        {
+        {//objective must 2A
             matrix = _graph.CreateAdjMatrix();
             count = _graph.getNumNodes();
         }
-        public void addGraph(Graph _graph)
-        {
+        public void AddGraph(Graph _graph)
+        {//objective must 2A
             matrix = _graph.CreateAdjMatrix();
             count = _graph.getNumNodes();
         }
-        public int getNumNodes()
+        public int GetNumNodes()
         {
             return count;
         }
-        public bool isLinked(int i, int j)
-        {
+        public bool IsLinked(int i, int j)
+        {//works with Must Objective 2a
             return matrix[i, j] is not null;
         }
         public void PrintMatrix()//test function that helps to visualise the adj matrix
-        {
+        {//objective must 2A
             Console.Write("       ");
             for (int i = 0; i < count; i++)
             {
@@ -96,16 +96,16 @@ namespace MoleculeNamer
         }
 
         public List<int> FindLongest()
-        {
+        {// works objective Must 2
             // build list of all routes from startnode
             List<int> longestRoute = new();
             // Using Depth first traversal of the adjacency matrix
             List<int> RouteSoFar1 = [0];
-            FindPaths(RouteSoFar1);
+            FindPaths(RouteSoFar1);//grapgh/tree traversal
             // longestcalcs
-            dumpRoute(longestRoute);//helper
-            findAllRouteCombinations();
-            foreach (var route in _allRouteCombinations)
+            DumpRoute(longestRoute);//helper
+            FindAllRouteCombinations();
+            foreach (var route in _allRouteCombinations)//objective must 2D
             {
                 //dumpRoute(route);
                 if (route.Count > longestRoute.Count)
@@ -116,11 +116,11 @@ namespace MoleculeNamer
             _mainChain.AddRange(longestRoute);
             return longestRoute;
         }
-        private void FindPaths(List<int> RouteSoFar)
+        private void FindPaths(List<int> RouteSoFar)//grapgh/tree traversal
         {
             int currentNode = RouteSoFar.Last(); // What was the last node?
             // find the neighbours of the current node
-            List<int> neighbours = buildNeighbourlist(currentNode);
+            List<int> neighbours = BuildNeighbourList(currentNode);
             bool validNextFound = false;
             // scan over all the neighbours
             foreach (int a in neighbours)
@@ -136,9 +136,9 @@ namespace MoleculeNamer
                         // add the neighbour to it
                         a
                     };
-                    dumpRoute(RouteSoFar1);
+                    DumpRoute(RouteSoFar1);
                     // now test for this list
-                    FindPaths(RouteSoFar1);
+                    FindPaths(RouteSoFar1);//objective must 3Ai//recursion
                 }
             }
             if (!validNextFound)
@@ -154,7 +154,7 @@ namespace MoleculeNamer
         //    - any routes that go via any node (either Root or interim)
         // Note - currently brute force 
         // - is not checking for repeats or reverse path
-        private void findAllRouteCombinations()
+        private void FindAllRouteCombinations()
         {
             foreach (List<int> primary in _allRoutesFromRootNode)
             {
@@ -173,8 +173,8 @@ namespace MoleculeNamer
                             i++;
                         }
                         // creates the merged route
-                        List<int> mergedRoute = [.. countBackward(matchPos, primary), .. countForward(matchPos, secondary)];
-                        dumpRoute(mergedRoute);
+                        List<int> mergedRoute = [.. CountBackward(matchPos, primary), .. CountForward(matchPos, secondary)];
+                        DumpRoute(mergedRoute);
                         _allRouteCombinations.Add(mergedRoute);//adds the created route to a lisst of every route
                     }
                 }
@@ -183,12 +183,8 @@ namespace MoleculeNamer
 
 
         // Helper function to extract the list range from matchpos to the end
-        private void dumpRoute(List<int> list){
-            foreach (int element in list){
-                Console.Write(element);
-            }
-        }
-        private List<int> countForward(int matchPos, List<int> route)
+
+        private static List<int> CountForward(int matchPos, List<int> route)
         {
             List<int> forwardSection = new();
             // TODO refactor to use a list segment
@@ -200,7 +196,7 @@ namespace MoleculeNamer
         }
         // Helper function to extract the list range from matchpos+1 to the end and then reverse it.
         // This can then be concatenated onto the countForward list
-        private List<int> countBackward(int matchpos, List<int> route)
+        private static List<int> CountBackward(int matchpos, List<int> route)
         {
             List<int> backwardSection = new();
             // TODO refactor to use a list segment
@@ -212,21 +208,8 @@ namespace MoleculeNamer
             return backwardSection;
         }
         // Builds a list of the neighbours of a given node
-        private List<int> buildNeighbourlist(int node)
-        {
-            List<int> neighbourList = new();
-            for (int i = 0; i < matrix.GetLength(1); i++)
-            {
-                // checks if the current node is linked to another index
-                if (isLinked(node, i) && !_mainChain.Contains(i))
-                {
-                    neighbourList.Add(i);
-                }
-            }
-            return neighbourList;
-        }
         // Find Nodes adjacent to route
-        private List<int> findNodesAdjacentToRoute(List<int> route, List<int> nodesToTest)
+        private List<int> FindNodesAdjacentToRoute(List<int> route, List<int> nodesToTest)
         {
             //find location of branch on main chain
             //find length of branch
@@ -237,7 +220,7 @@ namespace MoleculeNamer
             {
                 foreach (int nodeInRoute in route)
                 {
-                    if (isLinked(excess, nodeInRoute))
+                    if (IsLinked(excess, nodeInRoute))
                     {  //checks if it has a direct conection to the main route
                         nodesAdjacentToRoute.Add(nodeInRoute);  //node that the branches are connected
                     }
@@ -245,16 +228,18 @@ namespace MoleculeNamer
             }
             return nodesAdjacentToRoute;
         }
-        private string extendNameWithAlkylGroups(string suffix, List<int> mainRouteNodes, List<int> notInMainRoute)
+        private string ExtendNameWithAlkylGroups(string suffix, List<int> mainRouteNodes, List<int> notInMainRoute)
         {
             // Find Nodes adjacent to route
             // find location of branch on main chain
             // find length of branch
             // use length and position to correctly name the molecule
+            //objective must 3
             
             // Find Nodes adjacent to route
             // find location of branch on main chain
-            List<int> nodesAdjacentToRoute = findNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
+            //objective must 3Ai
+            List<int> nodesAdjacentToRoute = FindNodesAdjacentToRoute(mainRouteNodes, notInMainRoute);
             var noDupeAdj = nodesAdjacentToRoute.Distinct().ToList();//ensures roots arent repeated leading to repeated alkyl groups
             List<int> bLengths = new(FindBranchLength(noDupeAdj, mainRouteNodes));  // original list of branch lengths in the order of "branches"
             List<int> bLengthsOrdered = new();  // copy of Blengths for the prefixes
@@ -288,7 +273,7 @@ namespace MoleculeNamer
                     }
                 }
                 foreach (var item in positions)
-                {                   
+                {                   //objective must 4A
                     int intermediate = _mainChain.IndexOf(item)+1;
                     suffix = "," + intermediate + suffix;
                 }
@@ -296,14 +281,27 @@ namespace MoleculeNamer
             }
             return suffix;
         }
-        public string nameMolecule(List<int> mainRouteNodes)
+        private List<int> BuildNeighbourList(int node)
         {
+            List<int> neighbourList = new();
+            for (int i = 0; i < matrix.GetLength(1); i++)//linear search
+            {
+                // checks if the current node is linked to another index
+                if (IsLinked(node, i) && !_mainChain.Contains(i))
+                {
+                    neighbourList.Add(i);
+                }
+            }
+            return neighbourList;
+        }
+        public string NameMolecule(List<int> mainRouteNodes)
+        { //objective must 4A
             string name;
             // seed name based on length of the main Route (e.g. octane)
             name = _prefixDict[mainRouteNodes.Count] + "ane";
             // populate notInMainRoute with all nodes not in the mainRoute
             List<int> notInMainRoute = new();
-            foreach (int node in Enumerable.Range(0, getNumNodes() - 1))
+            foreach (int node in Enumerable.Range(0, GetNumNodes() - 1))
             {
                 if (!mainRouteNodes.Contains(node))
                 {
@@ -313,12 +311,13 @@ namespace MoleculeNamer
             // Are there additional nodes to account for?
             if (notInMainRoute.Count > 0)
             {
-                name = extendNameWithAlkylGroups(name, mainRouteNodes, notInMainRoute);
+                name = ExtendNameWithAlkylGroups(name, mainRouteNodes, notInMainRoute);
             }
             return name;
         }
+#pragma warning disable IDE0060 // Remove unused parameter
         private List<int> FindBranchLength(List<int> branchRoots, List<int> visitedNodes)
-        {
+        {//objective must 3Aii
             //create a new list that gives a list of branch lengths that directly corrolate to "branches"
             List<int> branchLengths = new();
             _ = new List<int>();
@@ -336,6 +335,11 @@ namespace MoleculeNamer
                 branchLengths.Add(branchRoute.Count-1);
             }
             return branchLengths;
+        }
+        private static void DumpRoute(List<int> list){
+            foreach (int element in list){
+                Console.Write(element);
+            }
         }
     }
 }

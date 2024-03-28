@@ -11,10 +11,14 @@ namespace MoleculeNamer
     public class MoleculeProcesssor
     {
 
-        Graph graph = new();
-        Dictionary<string, Node> molecule = new(); // this makes a dictionary of all the nodes
+        readonly Graph _graph = new();
+#pragma warning disable IDE0028 // Simplify collection initialization
+        readonly Dictionary<string, Node> _molecule = new(); // this makes a dictionary of all the nodes
+#pragma warning restore IDE0028 // Simplify collection initialization
 
-        private bool validateString_Char(string CSF)
+#pragma warning disable IDE1006 // Naming Styles
+        private bool ValidateString_Char(string CSF)
+#pragma warning restore IDE1006 // Naming Styles
         {
             int bracketNo = 0;
             int CNo = 0; //carbon number
@@ -27,6 +31,7 @@ namespace MoleculeNamer
                         Trace.WriteLine("validateString_Char: Rejecting due to " + CSF[i] + " not being C, ( or )");
                         return false;
                     }
+                    //objective must 2C
                     else if (CSF[i] == '(' || CSF[i] == ')') { bracketNo++; }//gets the number of brackets
                     else if (CSF[i] == 'C') { CNo++; }
                 }
@@ -43,7 +48,7 @@ namespace MoleculeNamer
                     return false;
                 }
                 if (CSF[CSF.Length - 1] != 'C') { return false; }//string must end in 'C'
-                return validateString_Brackets(CSF, bracketNo);
+                return ValidateString_Brackets(CSF, bracketNo);
             }
             else
             {
@@ -52,8 +57,8 @@ namespace MoleculeNamer
         }
 
 
-        private bool validateString_Brackets(string CSF, int bracketNo)
-        {
+        private bool ValidateString_Brackets(string CSF, int bracketNo)
+        {//objective must 2C
             int bracketTracker = 0;
             if (bracketNo > 0)
             {//checks if brackets exist in the string
@@ -86,15 +91,15 @@ namespace MoleculeNamer
                     return false;
                 }
             }
-            return validateString_closeBracket(CSF);
+            return ValidateString_closeBracket(CSF);
         }
-        private bool validateString_closeBracket(string CSF)
+        private static bool ValidateString_closeBracket(string CSF)
         {
             bool valid = true;
             return valid;
         }
 
-        public bool validateString(string CSF)
+        public bool ValidateString(string CSF)
         {
             /*
             verify the string consists of 'C' and '()' (this)                                        done
@@ -105,12 +110,12 @@ namespace MoleculeNamer
             make sure you dont have more than 2 '()' following a 'C' unless it is the start node, then it can be 3
             make sure input != Null                                                                  done
             */
-            bool valid = validateString_Char(CSF);
+            bool valid = ValidateString_Char(CSF);
             return valid;
         }
 
-        private void findArc(string CSF, Dictionary<string, Node> molecule)
-        {
+        private void FindArc(string CSF, Dictionary<string, Node> molecule)
+        {//objective must 2b
             
             int cValue = 0; // Index of C atom
             int noBrack = 0;
@@ -124,21 +129,21 @@ namespace MoleculeNamer
                
                 if (charValue == 'C')
                 {
-                    findArcLeft(i, CSF, molecule, trueCarbon);
-                    findArcRight(i, CSF, molecule, trueCarbon);
+                    FindArcLeft(i, CSF, molecule, trueCarbon);
+                    FindArcRight(i, CSF, molecule, trueCarbon);
                     cValue++;
                 }
-                else if (charValue == '(' || charValue == ')')
+                else if (charValue == '(' || charValue == ')')//objective must 2C
                 {
                     // Do nothing in these cases, as we only take action from specific atoms
                     noBrack++;
                 }
 
-                //graph.PrintMatrix();
+                _graph.PrintMatrix();//helper function
             }
         }
 
-        static void findArcLeft(int i, string CSF, Dictionary<string, Node> molecule, int trueCarbon)
+        static void FindArcLeft(int i, string CSF, Dictionary<string, Node> molecule, int trueCarbon)
         {
            
             if (i == 0) { return; } // return early if this is the left most early
@@ -157,7 +162,7 @@ namespace MoleculeNamer
 
                 ogNode.AddArc(connectingNode);
             }
-            else if (charValue == ')')
+            else if (charValue == ')')//objective must 2C
             {
                 
                 int cBracketCount = 1;
@@ -188,10 +193,10 @@ namespace MoleculeNamer
                     string OGNodeName = "C" + trueCarbon;
                     int Left = trueCarbon - no_Carbon;
 
-                    string Connection = "C" + Left;
+                    string connection = "C" + Left;
 
                     Node ogNode = molecule[OGNodeName];
-                    Node connectingNode = molecule[Connection];
+                    Node connectingNode = molecule[connection];
 
                     ogNode.AddArc(connectingNode);
                 
@@ -199,25 +204,24 @@ namespace MoleculeNamer
             else if (charValue == '(')
             {
                 int bracketNo =0;
-                char conectionvalue = charValue;
                 int x = 2;
                 int no_Carbon = 0;
-                bool Valid = true;
+                bool valid = true;
                 
-                while(Valid){
-                    conectionvalue = CSF[i - x];
-                    
-                    if(conectionvalue == 'C'){no_Carbon++;}
-                    else if(conectionvalue== ')'){bracketNo++;}
-                    else if(conectionvalue== '('){bracketNo--;}
+                while(valid){
+                    char conectionValue = CSF[i - x];
+
+                    if (conectionValue == 'C'){no_Carbon++;}
+                    else if(conectionValue== ')'){bracketNo++;}
+                    else if(conectionValue== '('){bracketNo--;}
                     x++;
-                    if(conectionvalue == 'C'&& bracketNo==0){Valid=false;}
+                    if(conectionValue == 'C'&& bracketNo==0){valid=false;}
                 }
 
                 string OGNodeName = "C" + trueCarbon;
-                int Left = trueCarbon - no_Carbon;
+                int left = trueCarbon - no_Carbon;
 
-                string Connection = "C" + Left;
+                string Connection = "C" + left;
 
                 Node ogNode = molecule[OGNodeName];
                 Node connectingNode = molecule[Connection];
@@ -226,7 +230,7 @@ namespace MoleculeNamer
             }
         }
         
-        static void findArcRight(int i, string CSF, Dictionary<string, Node> molecule, int trueCarbon)
+        static void FindArcRight(int i, string CSF, Dictionary<string, Node> molecule, int trueCarbon)
         {
             //Console.WriteLine("find arc right");
             if (i >= CSF.Length - 1) { return; }  // if last element in string then return early
@@ -234,9 +238,9 @@ namespace MoleculeNamer
             if (charValue == 'C')
             {
                 string OGNodeName = "C" + trueCarbon;
-                int Right = trueCarbon + 1;
+                int right = trueCarbon + 1;
 
-                string Connection = "C" + Right;
+                string Connection = "C" + right;
 
                 Node ogNode = molecule[OGNodeName];
                 Node connectingNode = molecule[Connection];
@@ -244,7 +248,7 @@ namespace MoleculeNamer
                 ogNode.AddArc(connectingNode, 1);
                 
             }
-            else if (charValue == ')') { }
+            else if (charValue == ')') { } //objective must 2C
             else if (charValue == '(')
             {
                 /*counts the number of open brackets and subtracts the number of closed
@@ -276,15 +280,15 @@ namespace MoleculeNamer
                 totalBrackets--;
                 string OGNodeName;
                 string Connection;
-                int Right;
+                int right;
                 if (testCharValue == 'C')
                 {
 
                     OGNodeName = "C" + trueCarbon;
-                    Right = trueCarbon + t - totalBrackets - 1;
-                    Console.WriteLine(Right);
+                    right = trueCarbon + t - totalBrackets - 1;
+                    Console.WriteLine(right);
 
-                    Connection = "C" + Right;
+                    Connection = "C" + right;
 
                     Node OgNode = molecule[OGNodeName];
                     Node connectingNodes = molecule[Connection];
@@ -293,9 +297,9 @@ namespace MoleculeNamer
                 }
                 
                 OGNodeName = "C" + trueCarbon;
-                Right = trueCarbon + 1;
+                right = trueCarbon + 1;
 
-                Connection = "C" + Right;
+                Connection = "C" + right;
 
                 Node ogNode = molecule[OGNodeName];
                 Node connectingNode = molecule[Connection];
@@ -303,28 +307,28 @@ namespace MoleculeNamer
                 ogNode.AddArc(connectingNode, 1);
             }
         }
-        public Graph processMolecule(string CSF)
+        public Graph ProcessMolecule(string CSF)
 
-        {
+        {   //objective must 2a
             // check that the string is valid, before continuing.
-            if (!validateString(CSF))
+            if (!ValidateString(CSF))
             {
                 // if the string is empty return the empty graph
-                return graph;
+                return _graph;
             }
 
             int count = CSF.Count(x => x == 'C');  // counts the number of 'C'
             string nodeName = "C0";
-            molecule.Add(nodeName, graph.CreateRoot(nodeName));  // creates the first carbon as a root
+            _molecule.Add(nodeName, _graph.CreateRoot(nodeName));  // creates the first carbon as a root
 
             for (int i = 1; i < count; i++)  // creates the rest of the nodes to the count of carbons
             {
                 
                 nodeName = "C" + i;
-                molecule.Add(nodeName, graph.CreateNode(nodeName));
+                _molecule.Add(nodeName, _graph.CreateNode(nodeName));
             }
-            findArc(CSF, molecule);
-            return graph;
+            FindArc(CSF, _molecule);
+            return _graph;
         }
 
     }
