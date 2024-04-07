@@ -8,7 +8,7 @@ namespace MoleculeNamer
         public string final = "";
         private static string SFconversion(string First)
         {//objective Must 1a
-            
+
             string final = "";
             for (int i = 0; i < First.Length; i++)
             {
@@ -16,15 +16,15 @@ namespace MoleculeNamer
                 {
 
                     final = final + First[i];
-                    
 
 
-                    
+
+
 
                 }
             }
             return final;
-            
+
         }
         private void SFInput()
         {
@@ -51,7 +51,7 @@ namespace MoleculeNamer
 
         public void startMenu()
         {
-            string CSF;       
+            string CSF;
             SFInput();
             CSF = final;
             MoleculeProcesssor molProc = new();  //creating an event og molecule process
