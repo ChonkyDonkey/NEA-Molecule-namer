@@ -152,14 +152,16 @@ namespace MoleculeNamer
             char testCharValue;
             if (charValue == 'C')
             {
+                // Identify the original node
                 string OGNodeName = "C" + trueCarbon;
                 int left = trueCarbon - 1;
 
                 string Connection = "C" + left;
 
-                Node ogNode = molecule[OGNodeName];
+                Node ogNode = molecule[OGNodeName]; // source Node
                 Node connectingNode = molecule[Connection];// the node that the code has identified as an arc
 
+                // Add arc for journey from ogNode to the connectingNode
                 ogNode.AddArc(connectingNode);
             }
             else if (charValue == ')')//objective must 2C

@@ -25,7 +25,7 @@ namespace MoleculeNamer
             return n;
         }
 
-        public int getNumNodes()
+        public int GetNumNodes()
         {
             return AllNodes.Count;
         }
@@ -59,7 +59,7 @@ namespace MoleculeNamer
             adj.PrintMatrix();
         }
 
-        public string nameMolecule()
+        public string NameMolecule()
         {
             AdjMatrix adj = new(this);
             List<int> longest = new(adj.FindLongest());

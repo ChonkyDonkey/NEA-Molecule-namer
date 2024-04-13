@@ -14,8 +14,8 @@ namespace MoleculeNamer
     public class AdjMatrix
     {
         //'_' local variable to the class
-        int?[,] matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
-        int count = 0; //  Number of nodes in the matrix
+        int?[,] _matrix; // The adjacency matrix is a 2D array mapping arcs between start and end nodes
+        int _count = 0; //  Number of nodes in the matrix
         // @TODO - These structures should be in a higher level function, rather than in the adjacency matrix itself
         // intermediate storage which helps understand the routes through the adjacency matrix
         readonly List<List<int>> _allRoutesFromRootNode = [];
@@ -41,53 +41,53 @@ namespace MoleculeNamer
         {
             //Default Constructor
         }
-        public AdjMatrix(int?[,] _adj, int _count)
+        public AdjMatrix(int?[,] adj, int count)
         {//objective must 2A
-            matrix = _adj;
-            count = _count;
+            _matrix = adj;
+            _count = count;
         }
-        public AdjMatrix(Graph _graph)
+        public AdjMatrix(Graph graph)
         {//objective must 2A
-            matrix = _graph.CreateAdjMatrix();
-            count = _graph.getNumNodes();
+            _matrix = graph.CreateAdjMatrix();
+            _count = graph.GetNumNodes();
         }
-        public void AddGraph(Graph _graph)
+        public void AddGraph(Graph graph)
         {//objective must 2A
-            matrix = _graph.CreateAdjMatrix();
-            count = _graph.getNumNodes();
+            _matrix = graph.CreateAdjMatrix();
+            _count = graph.GetNumNodes();
         }
         public int GetNumNodes()
         {
-            return count;
+            return _count;
         }
         public bool IsLinked(int i, int j)
         {//works with Must Objective 2a
-            return matrix[i, j] is not null;
+            return _matrix[i, j] is not null;
         }
         public void PrintMatrix()//test function that helps to visualise the adj matrix
         {//objective must 2A
             Console.Write("       ");
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _count; i++)
             {
                 Console.Write("{0}  ", (char)('0' + i));
             }
             Console.WriteLine();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _count; i++)
             {
                 Console.Write("{0} | [ ", (char)('0' + i));
-                for (int j = 0; j < count; j++)
+                for (int j = 0; j < _count; j++)
                 {
                     if (i == j)
                     {
                         Console.Write(" x,");
                     }
-                    else if (matrix[i, j] == null)
+                    else if (_matrix[i, j] == null)
                     {
                         Console.Write(" .,");
                     }
                     else
                     {
-                        Console.Write(" {0},", matrix[i, j]);
+                        Console.Write(" {0},", _matrix[i, j]);
                     }
                 }
                 Console.Write(" ]\r\n");
@@ -99,7 +99,7 @@ namespace MoleculeNamer
         {// works objective Must 2
             // build list of all routes from startnode
             List<int> longestRoute = new();
-            // Using Depth first traversal of the adjacency matrix
+            // Using Depth first traversal of the adjacency matrix representing a tree
             List<int> RouteSoFar1 = [0];
             FindPaths(RouteSoFar1);//grapgh/tree traversal
             // longestcalcs
@@ -116,9 +116,9 @@ namespace MoleculeNamer
             _mainChain.AddRange(longestRoute);
             return longestRoute;
         }
-        private void FindPaths(List<int> RouteSoFar)//grapgh/tree traversal
+        private void FindPaths(List<int> routeSoFar)//grapgh/tree traversal
         {
-            int currentNode = RouteSoFar.Last(); // What was the last node?
+            int currentNode = routeSoFar.Last(); // What was the last node?
             // find the neighbours of the current node
             List<int> neighbours = BuildNeighbourList(currentNode);
             bool validNextFound = false;
@@ -126,25 +126,25 @@ namespace MoleculeNamer
             foreach (int a in neighbours)
             {
                 // Have we visited this previously
-                if (!RouteSoFar.Contains(a))
+                if (!routeSoFar.Contains(a))
                 {
                     // Then this is a node to test on our route
                     validNextFound = true;
                     // Make a copy of the existing list
-                    List<int> RouteSoFar1 = new(RouteSoFar)
+                    List<int> routeSoFar1 = new(routeSoFar)
                     {
                         // add the neighbour to it
                         a
                     };
-                    DumpRoute(RouteSoFar1);
+                    DumpRoute(routeSoFar1);
                     // now test for this list
-                    FindPaths(RouteSoFar1);//objective must 3Ai//recursion
+                    FindPaths(routeSoFar1);//objective must 3Ai//recursion
                 }
             }
             if (!validNextFound)
             {
                 Console.WriteLine("No new neighbour was found - therefore at end of a route");
-                _allRoutesFromRootNode.Add(RouteSoFar);
+                _allRoutesFromRootNode.Add(routeSoFar);
                 Console.WriteLine(_allRoutesFromRootNode.Count);
             }
         }
@@ -287,7 +287,7 @@ namespace MoleculeNamer
         private List<int> BuildNeighbourList(int node)
         {
             List<int> neighbourList = new();
-            for (int i = 0; i < matrix.GetLength(1); i++)//linear search
+            for (int i = 0; i < _matrix.GetLength(1); i++)//linear search
             {
                 // checks if the current node is linked to another index
                 if (IsLinked(node, i) && !_mainChain.Contains(i))
@@ -341,6 +341,7 @@ namespace MoleculeNamer
         }
         private static void DumpRoute(List<int> list)
         {
+            //helper function
             foreach (int element in list)
             {
                 Console.Write(element);

@@ -18,21 +18,21 @@ namespace MoleculeNamer.UnitTests
         {
             Graph result = _moleculeProcessor.ProcessMolecule("");
             //Assert.IsFalse(result_graph, "emptyString should fail test");
-            Assert.IsTrue(result.getNumNodes() == 0, "\"\" will result in an empty list");
+            Assert.IsTrue(result.GetNumNodes() == 0, "\"\" will result in an empty list");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testOpenBracket()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("(");
-            Assert.IsTrue(result.getNumNodes() == 0, "( is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "( is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testCloseBracket()
         {
             Graph result = _moleculeProcessor.ProcessMolecule(")");
-            Assert.IsTrue(result.getNumNodes() == 0, ") is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, ") is invalid so no graph will be returned");
         }
 
         [TestMethod]
@@ -46,68 +46,68 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testBasicMoleculeWithCloseBracket()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C)");
-            Assert.IsTrue(result.getNumNodes() == 0, "C) is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C) is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeWithOpenBracket()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C(");
-            Assert.IsTrue(result.getNumNodes() == 0, "C( is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C( is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testEmptyBrackets()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("()");
-            Assert.IsTrue(result.getNumNodes() == 0, "() is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "() is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeWithEmptyBrackets()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C()");
-            Assert.IsTrue(result.getNumNodes() == 0, "C() is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C() is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculesWithEmptyBrackets()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C()C");
-            Assert.IsTrue(result.getNumNodes() == 0, "C()C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C()C is invalid so no graph will be returned");
         }
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeBracketsWithNoFollowOnC()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C(C)");
-            Assert.IsTrue(result.getNumNodes() == 0, "C(C)C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C(C)C is invalid so no graph will be returned");
         }
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeBracketsWithFollowOnC()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C(C)C");
-            Assert.IsTrue(result.getNumNodes() == 3, "C(C)C is valid so a 3 node graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 3, "C(C)C is valid so a 3 node graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testEmptyBracketsWithFollowOnC()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("()C");
-            Assert.IsTrue(result.getNumNodes() == 0, "()C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "()C is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeWithNestedBrackets()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C((C))C");
-            Assert.IsTrue(result.getNumNodes() == 0, "C((C))C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C((C))C is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeValidNestedBrackets()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C(C(C))C");
-            Assert.IsTrue(result.getNumNodes() == 4, "C(C(C))C is valid so a graph should be returned");
+            Assert.IsTrue(result.GetNumNodes() == 4, "C(C(C))C is valid so a graph should be returned");
         }
         [TestMethod]
         public void MoleculeProcesssor_testBasicMoleculeValidDoubleBrackets()
@@ -115,7 +115,7 @@ namespace MoleculeNamer.UnitTests
             Graph result = _moleculeProcessor.ProcessMolecule("C(C)(C)C");
             AdjMatrix adjMatrix = new(result);
             adjMatrix.PrintMatrix();
-            Assert.IsTrue(result.getNumNodes() == 4, "C(C)(C)C is valid so a graph should be returned");
+            Assert.IsTrue(result.GetNumNodes() == 4, "C(C)(C)C is valid so a graph should be returned");
             Assert.IsTrue(adjMatrix.IsLinked(0, 1), "Nodes 0 and 1 should be connected");
             Assert.IsTrue(adjMatrix.IsLinked(0, 2), "Nodes 0 and 1 should be connected");
             Assert.IsTrue(adjMatrix.IsLinked(0, 3), "Nodes 0 and 1 should be connected");
@@ -126,169 +126,169 @@ namespace MoleculeNamer.UnitTests
         public void MoleculeProcesssor_testBasicMoleculeBracketMismatch()
         {
             Graph result = _moleculeProcessor.ProcessMolecule("C(C(C)C");
-            Assert.IsTrue(result.getNumNodes() == 0, "C(C(C)C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "C(C(C)C is invalid so no graph will be returned");
 
             result = _moleculeProcessor.ProcessMolecule("CC(C))C");
-            Assert.IsTrue(result.getNumNodes() == 0, "CCC(C))C is invalid so no graph will be returned");
+            Assert.IsTrue(result.GetNumNodes() == 0, "CCC(C))C is invalid so no graph will be returned");
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_methane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("C");
-            Assert.AreEqual("methane", graph.nameMolecule());
+            Assert.AreEqual("methane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_ethane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CC");
-            Assert.AreEqual("ethane", graph.nameMolecule());
+            Assert.AreEqual("ethane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_propane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCC");
-            Assert.AreEqual("propane", graph.nameMolecule());
+            Assert.AreEqual("propane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_butane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCC");
-            Assert.AreEqual("butane", graph.nameMolecule());
+            Assert.AreEqual("butane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_pentane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCC");
-            Assert.AreEqual("pentane", graph.nameMolecule());
+            Assert.AreEqual("pentane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_hexane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCC");
-            Assert.AreEqual("hexane", graph.nameMolecule());
+            Assert.AreEqual("hexane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_heptane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCC");
-            Assert.AreEqual("heptane", graph.nameMolecule());
+            Assert.AreEqual("heptane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_octane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCC");
-            Assert.AreEqual("octane", graph.nameMolecule());
+            Assert.AreEqual("octane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_nonane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCC");
-            Assert.AreEqual("nonane", graph.nameMolecule());
+            Assert.AreEqual("nonane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_decane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCC");
-            Assert.AreEqual("decane", graph.nameMolecule());
+            Assert.AreEqual("decane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_undecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCC");
-            Assert.AreEqual("undecane", graph.nameMolecule());
+            Assert.AreEqual("undecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_duodecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCC");
-            Assert.AreEqual("dodecane", graph.nameMolecule());
+            Assert.AreEqual("dodecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_tridecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCC");
-            Assert.AreEqual("tridecane", graph.nameMolecule());
+            Assert.AreEqual("tridecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_tetradecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCC");
-            Assert.AreEqual("tetradecane", graph.nameMolecule());
+            Assert.AreEqual("tetradecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_pentadecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCC");
-            Assert.AreEqual("pentadecane", graph.nameMolecule());
+            Assert.AreEqual("pentadecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_hexadecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCCC");
-            Assert.AreEqual("hexadecane", graph.nameMolecule());
+            Assert.AreEqual("hexadecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_heptadecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCCCC");
-            Assert.AreEqual("heptadecane", graph.nameMolecule());
+            Assert.AreEqual("heptadecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_octaane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCCCCC");
-            Assert.AreEqual("octadecane", graph.nameMolecule());
+            Assert.AreEqual("octadecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_nonadecane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCCCCCC");
-            Assert.AreEqual("nonadecane", graph.nameMolecule());
+            Assert.AreEqual("nonadecane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_icosane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CCCCCCCCCCCCCCCCCCCC");
-            Assert.AreEqual("icosane", graph.nameMolecule());
+            Assert.AreEqual("icosane", graph.NameMolecule());
         }
 
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_butaneBrackets()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("C(CC)C");
-            Assert.AreEqual("butane", graph.nameMolecule());
+            Assert.AreEqual("butane", graph.NameMolecule());
         }
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_3_methylpentane()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CC(CC)CC");
-            Assert.AreEqual("3-methylpentane", graph.nameMolecule());
+            Assert.AreEqual("3-methylpentane", graph.NameMolecule());
         }
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_blah()
         {
             Graph graph = _moleculeProcessor.ProcessMolecule("CC(CCC)CC");
-            Assert.AreEqual("4-methylhexane", graph.nameMolecule());
+            Assert.AreEqual("4-methylhexane", graph.NameMolecule());
         }
 
         [TestMethod]
@@ -309,7 +309,7 @@ namespace MoleculeNamer.UnitTests
             List<int> Longest = new(adjMatrix.FindLongest());
             Assert.IsTrue(Longest.Count() == 5, "5 Connected nodes means that longest chain = 5");
 
-            Assert.AreEqual("3-ethyl-3-methylpentane", graph.nameMolecule());
+            Assert.AreEqual("3-ethyl-3-methylpentane", graph.NameMolecule());
         }
         [TestMethod]
         public void MoleculeProcesssor_testNameMolecule_blah3()
@@ -331,7 +331,7 @@ namespace MoleculeNamer.UnitTests
             List<int> Longest = new(adjMatrix.FindLongest());
             Assert.IsTrue(Longest.Count() == 6, "6 Connected nodes means that longest chain = 6");
 
-            Assert.AreEqual("4-ethyl-3-methylhexane", graph.nameMolecule());
+            Assert.AreEqual("4-ethyl-3-methylhexane", graph.NameMolecule());
         }
     }
 }

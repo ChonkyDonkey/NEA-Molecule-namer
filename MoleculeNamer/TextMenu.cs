@@ -58,7 +58,7 @@ namespace MoleculeNamer
 
             Graph graph = molProc.ProcessMolecule(CSF);
             //graph.PrintMatrix();
-            Console.WriteLine(graph.nameMolecule());
+            Console.WriteLine(graph.NameMolecule());
         }
     }
 }
