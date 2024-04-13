@@ -9,8 +9,8 @@ namespace MoleculeNamer
 {
     public class Graph
     {
-        public Node Root;
-        public List<Node> AllNodes = new List<Node>();
+        public Node? Root;
+        public List<Node> AllNodes = new();
 
         public Node CreateRoot(string name)
         {
@@ -24,26 +24,26 @@ namespace MoleculeNamer
             AllNodes.Add(n);
             return n;
         }
-        
-        public int getNumNodes() {
+
+        public int GetNumNodes()
+        {
             return AllNodes.Count;
         }
-        private int?[,] CreateAdjMatrix()
+        public int?[,] CreateAdjMatrix()
         {
             // Matrix will be created here...
-
             int?[,] adj = new int?[AllNodes.Count, AllNodes.Count];
 
+            // Iterate over all nodes
             for (int i = 0; i < AllNodes.Count; i++)
             {
+                // iterate over all peers
                 Node n1 = AllNodes[i];
-
                 for (int j = 0; j < AllNodes.Count; j++)
                 {
                     Node n2 = AllNodes[j];
 
                     var arc = n1.Arcs.FirstOrDefault(a => a.Child == n2);
-
                     if (arc != null)
                     {
                         adj[i, j] = arc.Weight;
@@ -51,14 +51,21 @@ namespace MoleculeNamer
                 }
             }
             return adj;
-
         }
 
         public void PrintMatrix()
         {
-            AdjMatrix adj = new AdjMatrix(CreateAdjMatrix(), AllNodes.Count);
+            AdjMatrix adj = new(this);
             adj.PrintMatrix();
         }
 
+        public string NameMolecule()
+        {
+            AdjMatrix adj = new(this);
+            List<int> longest = new(adj.FindLongest());
+            return adj.NameMolecule(longest);
+        }
     }
 }
+
+
