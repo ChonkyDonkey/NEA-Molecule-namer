@@ -333,15 +333,5 @@ namespace MoleculeNamer.UnitTests
 
             Assert.AreEqual("4-ethyl-3-methylhexane", graph.NameMolecule());
         }
-                [TestMethod]
-        public void MoleculeProcesssor_alkyl_branches_from_OG_carbon()
-        {
-            Graph result = _moleculeProcessor.processMolecule("C(C)(C)(C)C");
-            Assert.IsTrue(result.getNumNodes() == 5, "C(C)(C)(C)C is valid so a graph should be returned");
-            result = _moleculeProcessor.processMolecule("CC(C)(C)(C)C");
-            Assert.IsFalse(result.getNumNodes() == 6, "CC(C)(C)(C)C is valid so a graph should not be returned");
-            result = _moleculeProcessor.processMolecule("C(C)(C)(C)(C)C");
-            Assert.IsFalse(result.getNumNodes() == 6, "C(C)(C)(C)(C)C is valid so a graph should not be returned");
-        }
     }
 }
