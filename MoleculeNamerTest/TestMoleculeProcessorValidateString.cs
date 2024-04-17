@@ -13,103 +13,103 @@ namespace MoleculeNamer.UnitTests
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testEmptyString()
+        public void MoleculeProcesssor_testEmptyString()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("");
             Assert.IsFalse(result, "emptyString should fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testOpenBracket()
+        public void MoleculeProcesssor_testOpenBracket()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("(");
             Assert.IsFalse(result, "Open bracket should fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testCloseBracket()
+        public void MoleculeProcesssor_testCloseBracket()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString(")");
             Assert.IsFalse(result, "\')\' bracket should fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMolecule()
+        public void MoleculeProcesssor_testBasicMolecule()//typical
         {
             bool result = _moleculeProcessor.ValidateString("C");
             Assert.IsTrue(result, "\'C\' should pass test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeWithCloseBracket()
+        public void MoleculeProcesssor_testBasicMoleculeWithCloseBracket()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C)");
             Assert.IsFalse(result, "\'C)\' should fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeWithOpenBracket()
+        public void MoleculeProcesssor_testBasicMoleculeWithOpenBracket()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C(");
             Assert.IsFalse(result, "\'C(\' should fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testEmptyBrackets()
+        public void MoleculeProcesssor_testEmptyBrackets()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("()");
             Assert.IsFalse(result, "\'()\' should Fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeWithEmptyBrackets()
+        public void MoleculeProcesssor_testBasicMoleculeWithEmptyBrackets()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C()");
             Assert.IsFalse(result, "\'C()\' should Fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculesWithEmptyBrackets()
+        public void MoleculeProcesssor_testBasicMoleculesWithEmptyBrackets()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C()C");
             Assert.IsFalse(result, "\'C()C\' should fail test");
         }
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeBracketsWithNoFollowOnC()
+        public void MoleculeProcesssor_testBasicMoleculeBracketsWithNoFollowOnC()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C(C)");
             Assert.IsFalse(result, "\'C(C)\' should fail test");
         }
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeBracketsWithFollowOnC()
+        public void MoleculeProcesssor_testBasicMoleculeBracketsWithFollowOnC()//Typical
         {
             bool result = _moleculeProcessor.ValidateString("C(C)C");
             Assert.IsTrue(result, "\'C(C)C\' should pass test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testEmptyBracketsWithFollowOnC()
+        public void MoleculeProcesssor_testEmptyBracketsWithFollowOnC()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("()C");
             Assert.IsFalse(result, "\'()C\' should Fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeWithNestedBrackets()
+        public void MoleculeProcesssor_testBasicMoleculeWithNestedBrackets()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C((C))C");
             Assert.IsFalse(result, "'C((C))C' should Fail test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeValidNestedBrackets()
+        public void MoleculeProcesssor_testBasicMoleculeValidNestedBrackets()//Typical
         {
             bool result = _moleculeProcessor.ValidateString("C(C(C))C");
             Assert.IsTrue(result, "\'C(C(C))C\' should pass test");
         }
 
         [TestMethod]
-        public void MoleculeProcesssor_testBasicMoleculeBracketMismatch()
+        public void MoleculeProcesssor_testBasicMoleculeBracketMismatch()//Erroneous
         {
             bool result = _moleculeProcessor.ValidateString("C(C(C)C");
             Assert.IsFalse(result, "\'C(C(C)C\' should Fail test");
