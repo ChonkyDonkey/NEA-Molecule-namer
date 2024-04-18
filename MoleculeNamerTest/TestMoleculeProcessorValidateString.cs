@@ -2,6 +2,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MoleculeNamer.UnitTests
 {
+    //This class makes sure the input calidation is working correctly and no invalid inputs 
+    //are being passed through before the input is processed
     [TestClass]
     public class MoleculeNamer_MoleculeProcessor_ValidateStringShould
     {

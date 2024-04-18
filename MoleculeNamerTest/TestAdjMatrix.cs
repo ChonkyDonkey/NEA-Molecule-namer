@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MoleculeNamer.UnitTests
 {
+    //This class makes sure the process is doing as it is supposed to afte being given exact processing requirements
     [TestClass]
     public class MoleculeNamer_AdjMatrix_AdjMatrixShould
     {

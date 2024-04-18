@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MoleculeNamer.UnitTests
 {
+    // This class test the whole process is doing at is supposed to after taking inputs
     [TestClass]
     public class MoleculeNamer_MoleculeProcessor_ProcessMoleculeShould
     {
